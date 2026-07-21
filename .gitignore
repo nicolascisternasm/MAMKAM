@@ -1,0 +1,16 @@
+# Archivos sensibles
+enviar.php
+info.php
+SMTP.php
+PHPMailer.php
+Exception.php
+Catalogo_MAMKAM.xlsx
+ARCHIVOS-SUBIR.txt
+robots-tienda.txt
+
+# Git
+.git/
+
+# Node
+node_modules/
+.claude/

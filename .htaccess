@@ -1,0 +1,99 @@
+RewriteOptions inherit
+RewriteEngine on
+
+# ──────────────────────────────────────────────
+# EXCLUIR ARCHIVOS ESTÁTICOS DE REDIRECCIONES
+# ──────────────────────────────────────────────
+RewriteRule ^sitemap\.xml$ - [L]
+RewriteRule ^robots\.txt$ - [L]
+
+# ──────────────────────────────────────────────
+# FORZAR HTTPS (por si acaso)
+# ──────────────────────────────────────────────
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://www.mamkam.cl/$1 [R=301,L]
+
+# ──────────────────────────────────────────────
+# FORZAR WWW
+# ──────────────────────────────────────────────
+RewriteCond %{HTTP_HOST} ^mamkam\.cl$ [NC]
+RewriteRule ^(.*)$ https://www.mamkam.cl/$1 [R=301,L]
+
+# ──────────────────────────────────────────────
+# REDIRECCION INDEX.HTML AL HOME
+# ──────────────────────────────────────────────
+RewriteCond %{HTTP_HOST} ^mamkam\.cl$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.mamkam\.cl$
+RewriteRule ^index\.html$ https://www.mamkam.cl/ [R=301,L]
+
+# ──────────────────────────────────────────────
+# URLS ANTIGUAS CON ESPACIOS (corregidas)
+# ──────────────────────────────────────────────
+RewriteCond %{HTTP_HOST} ^mamkam\.cl$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.mamkam\.cl$
+RewriteRule ^Pasto(%20|\ |\+)Sintetico(%20|\ |\+)Padel\.html$ https://www.mamkam.cl/Pasto-Sintetico-Padel.html [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^mamkam\.cl$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.mamkam\.cl$
+RewriteRule ^Toldo(%20|\ |\+)a(%20|\ |\+)medida\.html$ https://www.mamkam.cl/Toldo-a-medida.html [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^.*$
+RewriteRule ^Pisos\-Alfombras/Alfombra\-Boucle\.html$ https://www.mamkam.cl/Pasto-Sintetico-Ornamental.html [R=301,L]
+
+# ──────────────────────────────────────────────
+# URLS ANTIGUAS CON 404 (nuevas correcciones)
+# ──────────────────────────────────────────────
+RewriteCond %{HTTP_HOST} ^mamkam\.cl$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.mamkam\.cl$
+RewriteRule ^Productos/construccion-canchas\.html$ https://www.mamkam.cl/Baldosas-PP-para-canchas.html [R=301,L]
+
+# ──────────────────────────────────────────────
+# REDIRECTS DE URLS CON ESPACIOS A URLS CON GUION
+# (versiones que ya existían, mantenidas)
+# ──────────────────────────────────────────────
+RewriteCond %{HTTP_HOST} ^mamkam\.cl$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.mamkam\.cl$
+RewriteRule ^Pasto\ Natural\.html$ https://www.mamkam.cl/Pasto-Natural.html [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^mamkam\.cl$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.mamkam\.cl$
+RewriteRule ^Caucho\ Insitu\ EPDM\.html$ https://www.mamkam.cl/Caucho-Insitu-EPDM.html [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^mamkam\.cl$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.mamkam\.cl$
+RewriteRule ^Riego\ Automatico\.html$ https://www.mamkam.cl/Riego-Automatico.html [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^mamkam\.cl$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.mamkam\.cl$
+RewriteRule ^Palmetas\ de\ Caucho\.html$ https://www.mamkam.cl/Palmetas-de-Caucho.html [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^mamkam\.cl$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.mamkam\.cl$
+RewriteRule ^Pasto\ Sintetico\ Deportivo\.html$ https://www.mamkam.cl/Pasto-Sintetico-Deportivo.html [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^mamkam\.cl$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.mamkam\.cl$
+RewriteRule ^Pasto\ Sintetico\ Ornamental\.html$ https://www.mamkam.cl/Pasto-Sintetico-Ornamental.html [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^mamkam\.cl$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.mamkam\.cl$
+RewriteRule ^Baldosas\ PP\ para\ estacionamiento\.html$ https://www.mamkam.cl/Baldosas-PP-para-estacionamiento.html [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^mamkam\.cl$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.mamkam\.cl$
+RewriteRule ^Baldosas\ PP\ para\ canchas\.html$ https://www.mamkam.cl/Baldosas-PP-para-canchas.html [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^mamkam\.cl$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.mamkam\.cl$
+RewriteRule ^Solerillas\ de\ Caucho\.html$ https://www.mamkam.cl/Solerillas-de-Caucho.html [R=301,L]
+
+# ──────────────────────────────────────────────
+# REDIRECT TIENDA (productos internos)
+# ──────────────────────────────────────────────
+RewriteCond %{HTTP_HOST} ^.*$
+RewriteRule ^products/pasto\-sintetico\-10mm$ https://tienda.mamkam.cl/collections/pasto-sintetico [R=301,L]
+
+# ──────────────────────────────────────────────
+# ANTI-CANNIBALIZATION — landing antiguas
+# ──────────────────────────────────────────────
+Redirect 301 /landing/precio-pasto-sintetico-chile.html https://www.mamkam.cl/precio-pasto-sintetico-chile.html

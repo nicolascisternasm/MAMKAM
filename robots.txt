@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /enviar.php
+Disallow: /forms/
+Disallow: /.htaccess
+
+Sitemap: https://www.mamkam.cl/sitemap.xml

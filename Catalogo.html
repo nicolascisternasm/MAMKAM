@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex, follow">
+<title>MAMKAM · Catálogo de Productos</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+// ── EMAILJS CONFIG ── Reemplaza con tus credenciales de emailjs.com ──
+var EMAILJS_PUBLIC_KEY  = 'ECJPZi0r2OXTnJjBa';
+var EMAILJS_SERVICE_ID  = 'service_abc123';
+var EMAILJS_TEMPLATE_ID = 'template_rs43bcq';
+var EMAILJS_TEMPLATE_VENDEDOR = 'template_rs43bcq'; // Cambiar si tienes template separado para vendedor
+emailjs.init(EMAILJS_PUBLIC_KEY);
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --dk:#1a1a2e;--md:#5a6070;--lt:#f4f6fb;--bd:#e2e8f0;
+  --gr:#1a6b3c;--grl:#e6f4ec;
+  --bl:#1565c0;--bll:#e3f2fd;
+  --or:#e65100;--orl:#fff3e0;
+  --tl:#0d5a52;--tll:#e0f7fa;
+  --rd:#c62828;
+  --sh:0 2px 16px rgba(0,0,0,.07);--shl:0 16px 48px rgba(0,0,0,.15);
+  --r:14px;--tr:.2s ease;
+  --f-head:'Nunito',sans-serif;--f-body:'Poppins',sans-serif;
+}
+body{font-family:var(--f-body);background:var(--lt);color:var(--dk);min-height:100vh;overflow-x:hidden}
+#dp,#ds{display:none}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);padding:0 clamp(12px,4vw,40px);display:flex;align-items:center;justify-content:space-between;height:62px;gap:12px}
+.nlogo{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0}
+.nlogo img{height:34px;object-fit:contain}
+.nlogt{font-family:var(--f-head);font-weight:900;font-size:20px;letter-spacing:2px;color:var(--gr)}
+.nsrch{flex:1;max-width:340px;position:relative;display:flex;align-items:center}
+.nsrch input{width:100%;padding:9px 14px 9px 38px;border:2px solid var(--bd);border-radius:30px;font-family:var(--f-body);font-size:13px;background:#fff;outline:none;transition:border var(--tr),box-shadow var(--tr)}
+.nsrch input:focus{border-color:var(--gr);box-shadow:0 0 0 3px rgba(26,107,60,.1)}
+.sico{position:absolute;left:12px;color:var(--md);pointer-events:none;width:16px;height:16px}
+.nact{display:flex;gap:8px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:30px;border:none;cursor:pointer;font-family:var(--f-body);font-size:12px;font-weight:600;transition:all var(--tr);white-space:nowrap;text-decoration:none}
+.btn svg{width:14px;height:14px;flex-shrink:0}
+.bg{background:transparent;border:2px solid var(--bd);color:var(--md)}
+.bg:hover{border-color:var(--gr);color:var(--gr);background:var(--grl)}
+.bhome{background:var(--gr);color:#fff}
+.bhome:hover{background:#0f4a29;transform:translateY(-1px)}
+.bcot{background:var(--bl);color:#fff;position:relative}
+.bcot:hover{background:#0d47a1;transform:translateY(-1px)}
+.bwa{background:#25d366;color:#fff}
+.bwa:hover{background:#128c7e;transform:translateY(-1px)}
+.cba{position:absolute;top:-6px;right:-6px;background:var(--rd);color:#fff;border-radius:50%;width:18px;height:18px;display:none;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+.cba.show{display:flex}
+#hbg{display:none;background:none;border:none;cursor:pointer;padding:6px;color:var(--dk)}
+
+/* LOADING */
+#loading{position:fixed;inset:0;z-index:999;background:rgba(250,250,248,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+.spinner{width:44px;height:44px;border:4px solid var(--grl);border-top-color:var(--gr);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-txt{font-family:var(--f-head);font-size:15px;font-weight:700;color:var(--gr)}
+.loading-sub{font-size:12px;color:var(--md)}
+#loading.hidden{opacity:0;pointer-events:none;transition:opacity .4s ease}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,var(--gr) 0%,#0f4a29 45%,var(--tl) 100%);padding:clamp(32px,6vw,64px) clamp(16px,4vw,48px);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(255,255,255,.06) 0%,transparent 60%)}
+.hi{position:relative;z-index:1;max-width:860px}
+.hbdg{display:inline-flex;align-items:center;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:30px;padding:5px 14px;font-size:11px;font-weight:700;color:rgba(255,255,255,.9);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px}
+.hero h1{font-family:var(--f-head);font-size:clamp(26px,5vw,50px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:10px}
+.hero h1 em{font-style:normal;color:#ffcc02}
+.hero p{font-size:clamp(13px,1.8vw,16px);color:rgba(255,255,255,.8);max-width:500px;line-height:1.65;margin-bottom:24px}
+.sts{display:flex;flex-wrap:wrap;gap:14px}
+.st{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:10px 18px;text-align:center}
+.stn{font-family:var(--f-head);font-size:24px;font-weight:900;color:#ffcc02;line-height:1}
+.stl{font-size:9px;font-weight:700;color:rgba(255,255,255,.65);letter-spacing:2px;text-transform:uppercase;margin-top:3px}
+
+/* TABS */
+.ctabs{background:#fff;border-bottom:1px solid var(--bd);padding:0 clamp(12px,4vw,40px);display:flex;overflow-x:auto;scrollbar-width:none;position:sticky;top:62px;z-index:150}
+.ctabs::-webkit-scrollbar{display:none}
+.ctab{display:flex;align-items:center;gap:8px;padding:16px 18px;border:none;background:none;cursor:pointer;font-family:var(--f-body);font-size:13px;font-weight:600;color:var(--md);white-space:nowrap;border-bottom:3px solid transparent;transition:all var(--tr);flex-shrink:0}
+.ctab:hover{color:var(--dk);background:#f8f9fa}
+.ctab.on{border-bottom-color:var(--gr);color:var(--gr)}
+.ctcn{background:var(--lt);border-radius:20px;padding:2px 8px;font-size:11px;font-weight:700;color:var(--md)}
+.ctab.on .ctcn{background:var(--gr);color:#fff}
+
+/* SUBFILTER */
+.scbar{padding:12px clamp(12px,4vw,40px);display:flex;flex-wrap:wrap;gap:8px;border-bottom:1px solid var(--bd);background:#fff}
+.sctg{padding:5px 14px;border-radius:20px;border:2px solid var(--bd);background:transparent;cursor:pointer;font-family:var(--f-body);font-size:12px;font-weight:600;color:var(--md);transition:all var(--tr)}
+.sctg:hover{border-color:var(--gr);color:var(--gr)}
+.sctg.on{background:var(--gr);border-color:var(--gr);color:#fff}
+
+/* TOOLBAR */
+.tlbr{padding:14px clamp(12px,4vw,40px);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.rc{font-size:13px;color:var(--md)}
+.rc strong{color:var(--dk);font-weight:700}
+.vtg{display:flex;gap:3px;background:var(--lt);border-radius:10px;padding:3px}
+.vb{width:32px;height:32px;border:none;border-radius:7px;cursor:pointer;background:none;color:var(--md);display:flex;align-items:center;justify-content:center;transition:all var(--tr)}
+.vb.on{background:#fff;color:var(--gr);box-shadow:var(--sh)}
+
+/* GRID */
+#grid{padding:0 clamp(12px,4vw,40px) 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+#grid.lv{grid-template-columns:1fr;gap:10px}
+.card{background:#fff;border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;cursor:pointer;transition:transform var(--tr),box-shadow var(--tr);animation:fu .3s ease both;border:1.5px solid transparent}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shl);border-color:var(--bd)}
+@keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.ciw{position:relative;overflow:hidden;aspect-ratio:4/3;background:var(--grl)}
+.ci{width:100%;height:100%;object-fit:contain;padding:16px;position:relative;z-index:1;transition:transform .4s ease}
+.card:hover .ci{transform:scale(1.05)}
+.cph{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;font-size:40px;gap:4px;opacity:.3;z-index:2}
+.cph small{font-size:11px;font-weight:600;color:var(--md);opacity:1}
+.cprc{position:absolute;bottom:10px;right:10px;z-index:3;background:rgba(0,0,0,.72);color:#ffcc02;padding:4px 12px;border-radius:20px;font-family:var(--f-head);font-size:12px;font-weight:800}
+.cbody{padding:14px 14px 8px}
+.cco{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--md);margin-bottom:3px;text-transform:uppercase}
+.cna{font-family:var(--f-head);font-size:15px;font-weight:800;color:var(--dk);line-height:1.25;margin-bottom:6px}
+.cde{font-size:11px;color:var(--md);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:8px}
+.cacts{padding:10px 14px 14px;display:flex;gap:8px;border-top:1px solid var(--bd)}
+.cadd,.cver{flex:1;padding:8px;border-radius:10px;cursor:pointer;font-family:var(--f-body);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:5px;transition:all var(--tr)}
+.cadd{border:2px solid var(--bd);background:transparent;color:var(--md)}
+.cadd:hover{border-color:var(--gr);color:var(--gr);background:var(--grl)}
+.cver{border:none;background:var(--gr);color:#fff}
+.cver:hover{background:#0f4a29}
+#grid.lv .card{display:grid;grid-template-columns:130px 1fr}
+#grid.lv .ciw{aspect-ratio:unset;height:130px;border-radius:0}
+#grid.lv .cbody{display:flex;flex-direction:column;justify-content:center}
+#grid.lv .cacts{border-top:none;border-left:1px solid var(--bd);flex-direction:column;padding:12px;justify-content:center}
+
+/* SERVICE GRID */
+.svcg{padding:20px clamp(12px,4vw,40px) 60px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.svcc{background:#fff;border-radius:20px;box-shadow:var(--sh);overflow:hidden;border:2px solid var(--bd);transition:all var(--tr);cursor:pointer}
+.svcc:hover{transform:translateY(-4px);box-shadow:var(--shl);border-color:var(--tl)}
+.svct{padding:28px;background:linear-gradient(135deg,var(--tll),#b2ebf2);display:flex;align-items:center;gap:14px}
+.svcem{font-size:44px}
+.svctxt{font-family:var(--f-head);font-size:18px;font-weight:900;color:var(--dk)}
+.svcsub{font-size:12px;color:var(--md);margin-top:3px}
+.svcb{padding:22px}
+.svcn{font-family:var(--f-head);font-size:16px;font-weight:900;color:var(--dk);margin-bottom:8px}
+.svcd{font-size:13px;color:var(--md);line-height:1.65;margin-bottom:16px}
+.svca{width:100%;padding:11px;border-radius:10px;border:none;background:var(--tl);cursor:pointer;font-family:var(--f-body);font-size:13px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;gap:7px;transition:all var(--tr)}
+.svca:hover{background:#083d37}
+
+/* DETAIL MODAL */
+.dovl{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity var(--tr)}
+.dovl.open{opacity:1;pointer-events:all}
+.dmdl{background:#fff;border-radius:24px;width:100%;max-width:780px;max-height:92vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 40px 100px rgba(0,0,0,.25);transform:scale(.93) translateY(16px);transition:transform var(--tr)}
+.dovl.open .dmdl{transform:scale(1) translateY(0)}
+.dh{display:flex;align-items:flex-start;justify-content:space-between;padding:18px 24px 14px;border-bottom:1px solid var(--bd);flex-shrink:0}
+.dtag{display:inline-flex;align-items:center;gap:5px;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:700;color:#fff;background:var(--gr)}
+.dcls{width:36px;height:36px;border-radius:50%;border:2px solid var(--bd);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--md);transition:all var(--tr);flex-shrink:0}
+.dcls:hover{background:#ffebee;border-color:var(--rd);color:var(--rd)}
+.dbd{display:flex;overflow-y:auto;flex:1;min-height:0}
+.dimgcol{width:44%;flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:36px;background:var(--grl)}
+.dimg{max-width:100%;max-height:300px;object-fit:contain;filter:drop-shadow(0 8px 24px rgba(0,0,0,.14));border-radius:12px}
+.dinf{flex:1;padding:28px 28px 28px 20px;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
+.dco{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--md)}
+.dna{font-family:var(--f-head);font-size:22px;font-weight:900;color:var(--dk);line-height:1.2}
+.dacc{width:36px;height:4px;border-radius:2px;background:var(--gr)}
+.dde{font-size:13px;color:var(--md);line-height:1.8}
+.dpbx{background:var(--lt);border-radius:12px;padding:16px;display:flex;gap:10px}
+.dpi{flex:1;text-align:center;background:#fff;border-radius:10px;padding:10px 8px;border:1.5px solid var(--bd)}
+.dpil{font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--md);margin-bottom:4px}
+.dpiv{font-family:var(--f-head);font-size:17px;font-weight:900;color:var(--gr)}
+.df{padding:14px 24px;border-top:1px solid var(--bd);display:flex;gap:10px;justify-content:flex-end;flex-shrink:0;background:#fff;flex-wrap:wrap}
+
+/* CART VIEW */
+.cv{min-height:100vh;background:var(--lt)}
+.cvh{background:#fff;border-bottom:1px solid var(--bd);padding:24px clamp(16px,4vw,48px);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.cvht{font-family:var(--f-head);font-size:28px;font-weight:900}
+.cvhs{font-size:13px;color:var(--md);margin-top:4px}
+.cvba{display:grid;grid-template-columns:1fr 380px;gap:24px;padding:24px clamp(16px,4vw,48px);max-width:1200px;margin:0 auto;align-items:start}
+.cits{display:flex;flex-direction:column;gap:14px}
+.cit{background:#fff;border-radius:var(--r);box-shadow:var(--sh);padding:18px;display:flex;gap:14px;align-items:flex-start;border:1.5px solid var(--bd)}
+.citim{width:72px;height:72px;border-radius:10px;object-fit:contain;background:var(--grl);padding:6px;flex-shrink:0}
+.citim.sv{display:flex;align-items:center;justify-content:center;font-size:28px;background:var(--tll)}
+.citf{flex:1;min-width:0}
+.citn{font-family:var(--f-head);font-size:15px;font-weight:800;margin-bottom:4px;color:var(--dk)}
+.citco{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--md);margin-bottom:8px}
+.sbp{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700}
+.sbpnd{background:var(--orl);color:var(--or)}
+.sbrdy{background:var(--grl);color:var(--gr)}
+.citpr{font-family:var(--f-head);font-size:18px;font-weight:900;color:var(--gr);margin-top:8px}
+.citpr.nd{color:var(--md);font-size:13px;font-weight:500}
+.cbtn{margin-top:10px;padding:8px 18px;border-radius:10px;border:2px solid var(--or);background:transparent;cursor:pointer;font-family:var(--f-body);font-size:12px;font-weight:700;color:var(--or);transition:all var(--tr);display:inline-flex;align-items:center;gap:6px}
+.cbtn:hover{background:var(--or);color:#fff}
+.crm{width:32px;height:32px;border:none;background:none;cursor:pointer;color:var(--md);border-radius:8px;display:flex;align-items:center;justify-content:center;transition:all var(--tr);flex-shrink:0}
+.crm:hover{background:#ffebee;color:var(--rd)}
+.csd{position:sticky;top:86px;display:flex;flex-direction:column;gap:16px}
+.csm{background:#fff;border-radius:var(--r);box-shadow:var(--sh);padding:22px;border:1.5px solid var(--bd)}
+.csmt{font-family:var(--f-head);font-size:18px;font-weight:900;margin-bottom:16px}
+.sr{display:flex;justify-content:space-between;font-size:13px;color:var(--md);padding:6px 0}
+.srt{border-top:2px solid var(--bd);margin-top:8px;padding-top:14px;font-size:16px;font-weight:700;color:var(--dk)}
+.snot{font-size:11px;color:var(--or);background:var(--orl);border-radius:8px;padding:10px;margin-top:10px;line-height:1.5}
+.cf{background:#fff;border-radius:var(--r);box-shadow:var(--sh);padding:22px;border:1.5px solid var(--bd)}
+.cft{font-family:var(--f-head);font-size:18px;font-weight:900;margin-bottom:16px}
+.fg{margin-bottom:14px}
+.fl{display:block;font-size:12px;font-weight:600;color:var(--dk);margin-bottom:6px}
+.fi{width:100%;padding:10px 14px;border:2px solid var(--bd);border-radius:var(--r);font-family:var(--f-body);font-size:13px;outline:none;transition:border var(--tr);background:#fff;color:var(--dk)}
+.fi:focus{border-color:var(--gr)}
+.sbtn{width:100%;padding:14px;border-radius:12px;border:none;background:var(--gr);cursor:pointer;font-family:var(--f-body);font-size:14px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;transition:all var(--tr);margin-top:8px}
+.sbtn:hover{background:#0f4a29;transform:translateY(-1px)}
+.sbtn:disabled{background:#aaa;cursor:not-allowed;transform:none}
+.cemp{text-align:center;padding:80px 20px;color:var(--md)}
+
+/* CALC OVERLAY */
+.clov{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity var(--tr)}
+.clov.open{opacity:1;pointer-events:all}
+.clm{background:#fff;border-radius:24px;width:100%;max-width:540px;box-shadow:0 40px 100px rgba(0,0,0,.25);transform:scale(.93) translateY(16px);transition:transform var(--tr);overflow:hidden;max-height:92vh;display:flex;flex-direction:column}
+.clov.open .clm{transform:scale(1) translateY(0)}
+.clh{background:linear-gradient(135deg,var(--or),#bf360c);padding:24px 28px;color:#fff;flex-shrink:0}
+.clht{font-family:var(--f-head);font-size:20px;font-weight:900}
+.clhs{font-size:12px;opacity:.85;margin-top:4px}
+.clbody{padding:24px 28px;overflow-y:auto;flex:1}
+.cq{margin-bottom:18px}
+.cql{display:block;font-size:13px;font-weight:600;color:var(--dk);margin-bottom:8px}
+.cqi{width:100%;padding:10px 14px;border:2px solid var(--bd);border-radius:var(--r);font-family:var(--f-body);font-size:13px;outline:none;transition:border var(--tr);background:#fff;color:var(--dk)}
+.cqi:focus{border-color:var(--or)}
+.cres{background:var(--orl);border-radius:12px;padding:16px;margin-top:14px;display:none}
+.crt{font-size:11px;font-weight:700;color:var(--or);margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em}
+.crv{font-family:var(--f-head);font-size:26px;font-weight:900;color:var(--or)}
+.crdetail{font-size:12px;color:var(--md);margin-top:6px;line-height:1.6}
+.crn{font-size:11px;color:var(--md);margin-top:8px;line-height:1.5;border-top:1px solid var(--bd);padding-top:8px}
+.clf{padding:14px 28px;border-top:1px solid var(--bd);display:flex;gap:10px;justify-content:flex-end;flex-shrink:0}
+
+/* SUCCESS */
+.sucov{position:fixed;inset:0;z-index:500;background:rgba(10,20,50,.9);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .4s ease}
+.sucov.open{opacity:1;pointer-events:all}
+.succ{background:#fff;border-radius:24px;max-width:480px;width:100%;padding:48px 40px;text-align:center;box-shadow:0 40px 100px rgba(0,0,0,.3)}
+.suci{font-size:64px;margin-bottom:16px;display:block}
+.suct{font-family:var(--f-head);font-size:26px;font-weight:900;margin-bottom:10px}
+.suctx{font-size:14px;color:var(--md);line-height:1.75;margin-bottom:28px}
+
+/* TOAST */
+.tst{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--dk);color:#fff;padding:12px 24px;border-radius:30px;font-size:12px;font-weight:600;z-index:600;transition:transform var(--tr);pointer-events:none;white-space:nowrap;box-shadow:var(--shl)}
+.tst.show{transform:translateX(-50%) translateY(0)}
+
+/* MOBILE */
+.msrch{display:none;position:fixed;top:62px;left:0;right:0;background:#fff;padding:12px 16px;border-bottom:1px solid var(--bd);z-index:180;gap:8px;align-items:center}
+.msrch.open{display:flex}
+.msrch input{flex:1;padding:9px 14px;border:2px solid var(--bd);border-radius:30px;font-family:var(--f-body);font-size:14px;outline:none}
+#stb{position:fixed;bottom:24px;right:24px;z-index:100;width:44px;height:44px;border-radius:50%;background:var(--gr);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(26,107,60,.4);transform:translateY(80px);opacity:0;transition:all var(--tr)}
+#stb.show{transform:translateY(0);opacity:1}
+
+/* ERR */
+.err-box{background:#fff;border:2px solid var(--rd);border-radius:var(--r);padding:24px;margin:24px clamp(12px,4vw,40px);display:none}
+.err-box.show{display:block}
+.err-title{font-family:var(--f-head);font-size:16px;font-weight:800;color:var(--rd);margin-bottom:8px}
+.err-txt{font-size:13px;color:var(--md);line-height:1.6}
+
+/* VIEW TOGGLE */
+.view{display:none}
+.view.active{display:block}
+
+@media(max-width:900px){.cvba{grid-template-columns:1fr}}
+@media(max-width:768px){#hbg{display:flex}.nsrch,.bg{display:none}.dbd{flex-direction:column}.dimgcol{width:100%;height:200px;padding:20px}.df{justify-content:stretch}.df .btn{flex:1;justify-content:center}}
+@media(max-width:480px){#grid{grid-template-columns:1fr 1fr;gap:10px}#grid.lv{grid-template-columns:1fr}.cna{font-size:13px}}
+@media print{nav,.ctabs,.scbar,.tlbr,#stb,.dovl,.clov,.sucov,.df,.cacts{display:none!important}.card{break-inside:avoid}#grid{grid-template-columns:repeat(3,1fr)}body{background:white}}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="loading">
+  <div class="spinner"></div>
+  <div class="loading-txt">Cargando catálogo...</div>
+  <div class="loading-sub">Leyendo datos desde Excel</div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nlogo" href="index.html">
+    <img src="assets/img/logo.png" alt="MAMKAM" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <span class="nlogt" style="display:none">MAMKAM</span>
+  </a>
+  <div class="nsrch">
+    <svg class="sico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="si" placeholder="Buscar producto..." autocomplete="off">
+  </div>
+  <div class="nact">
+    <a href="index.html" class="btn bhome">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Inicio
+    </a>
+    <button class="btn bcot" id="cart-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      Mi Proyecto
+      <span class="cba" id="cb">0</span>
+    </button>
+    <button id="hbg">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</nav>
+
+<div class="msrch" id="ms">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+  <input type="text" id="msi" placeholder="Buscar...">
+  <button id="msc" style="background:none;border:none;cursor:pointer;font-size:18px;color:#888">&#10005;</button>
+</div>
+
+<!-- ERROR BOX -->
+<!-- EMBEDDED DATA — fallback when Excel not on server -->
+<textarea id="embedded-data" style="display:none" aria-hidden="true">[{"co":"P-1","no":"Balanc\u00edn Simple","sub":"Balancines","de":"Medidas Ancho: 129 cm Largo: 277 cm Alto: 112 cm Para 4 ni\u00f1os de m\u00e1s de 3 a 10 a\u00f1os. Balanc\u00edn met\u00e1lico doble 100% galvanizado, 4 asientos de polietileno low density, perner\u00eda de acero inoxidable, p...","pn":303353,"pi":360991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Balancines/P-1%20Balacin%20doble.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-2","no":"Balanc\u00edn Doble","sub":"Balancines","de":"Medidas Ancho: 75 cm Largo: 277 cm Alto: 112 cm Para 2 ni\u00f1os de m\u00e1s de 3 a 10 a\u00f1os. Balanc\u00edn met\u00e1lico doble 100% galvanizado, 2 asientos de polietileno low density, perner\u00eda de acero inoxidable, pi...","pn":223521,"pi":265991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Balancines/P-2%20Balancin%20simple.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-3","no":"Balanc\u00edn Triple","sub":"Balancines","de":"Medidas Ancho: 159 cm Largo: 277 cm Alto: 112 cm Para 6 ni\u00f1os de m\u00e1s de 3 a 10 a\u00f1os. Balanc\u00edn met\u00e1lico doble 100% galvanizado, 6 asientos de polietileno low density, perner\u00eda de acero inoxidable, p...","pn":383185,"pi":455991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Balancines/P-3-%20balancin%20triple.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-4","no":"Balanc\u00edn Infantil Simple","sub":"Balancines","de":"Medidas Ancho: 30 cm Largo: 300 cm Alto: 70 cm Para 2 ni\u00f1os de m\u00e1s de 5 a 12 a\u00f1os.  Balanc\u00edn simple madera fabricado con rollizo calibrado impregnado con sales cca (cobre-cromo-ars\u00e9nico) insecticid...","pn":159656,"pi":189991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Balancines/P-4%20Balancin%20de%20madera%20simple.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-5","no":"Balanc\u00edn con Respaldo","sub":"Balancines","de":"Medidas Ancho: 60 cm Largo: 300 cm Alto: 70 cm Para 2 ni\u00f1os de m\u00e1s de 5 a 12 a\u00f1os.  Balanc\u00edn doble de madera fabricado con rollizo calibrado impregnado con sales cca (cobre-cromo-ars\u00e9nico) insectic...","pn":295370,"pi":351491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Balancines/P-5%20balancin%20de%20madera%20doble.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-50","no":"Tobog\u00e1n Simple","sub":"Toboganes","de":"Medidas Ancho: 66 cm Largo: 350 cm Alto: 220 cm Para de 1 ni\u00f1os de m\u00e1s de 3 a 12 a\u00f1os. Juego infantil Tobog\u00e1n con canoa met\u00e1lica rectangular mediana 100% galvanizado, perner\u00eda de acero inoxidable, ...","pn":319320,"pi":379991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Toboganes/P-50%20tobogan.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-51","no":"Tobog\u00e1n Doble","sub":"Toboganes","de":"Medidas Ancho: 100 cm Largo: 182 cm Alto: 230 cm Para de 1 a 2 ni\u00f1os de m\u00e1s de 3 a 12 a\u00f1os. Tobog\u00e1n doble de pl\u00e1stico rotomoldeado y estructura met\u00e1lica, fabricado por Juegos Planella. Dise\u00f1ado par...","pn":502933,"pi":598491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Toboganes/P-51%20Tobogan%20doble.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-52","no":"Tobog\u00e1n con Escalera","sub":"Toboganes","de":"Medidas Ancho: 150 cm Largo: 245 cm Alto: 230 cm Para de 1 a 2 ni\u00f1os de m\u00e1s de 5 a 12 a\u00f1os. Este resbal\u00edn cuenta con una estructura fabricada en acero galvanizado y el tobog\u00e1n esta fabricado en LLD...","pn":518900,"pi":617491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Toboganes/P-52%20tobogan%20curvo.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-53","no":"Tobog\u00e1n Espiral","sub":"Toboganes","de":"Medidas Ancho: 190 cm Largo: 497 cm Alto: 211 cm Para de 1 a 2 ni\u00f1os de m\u00e1s de 3 a 12 a\u00f1os. Este es un tobog\u00e1n doble met\u00e1lico, adecuado para parques p\u00fablicos o privados. Fomenta el desarrollo de ha...","pn":550832,"pi":655491,"im":"assets/img/Catalogo-Juegos/Juegos%20de%20plaza%20clasicos/Toboganes/P-52%20tobogan%20curvo.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-101","no":"Columpio Simple 2 Asientos","sub":"Columpios","de":"Columpio de 2 asientos para ni\u00f1os de 3 a 14 a\u00f1os. Estructura de acero galvanizado de alta resistencia con pintura electrost\u00e1tica al horno. Asientos de polipropileno con cadenas plastificadas. Ideal...","pn":325203,"pi":386991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Columpios/P-101-%20Columpio%20doble.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-100","no":"Columpio Doble 2 Asientos","sub":"Columpios","de":"Medidas Ancho: 145-150 cm Largo: 320-350 cm Alto: 200-245 cm  Capacidad: 2-3 ni\u00f1os de 2 a 12 a\u00f1os.","pn":431085,"pi":512991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Columpios/P-100%20Columpio%20triple.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-106","no":"Columpio Beb\u00e9","sub":"Columpios","de":"Columpio individual dise\u00f1ado especialmente para beb\u00e9s y ni\u00f1os de 6 meses a 3 a\u00f1os. Asiento canasto de polietileno con protecci\u00f3n frontal de seguridad. Estructura de acero galvanizado con pintura el...","pn":249572,"pi":296991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Columpios/P-106%20.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-102","no":"Columpio Triple","sub":"Columpios","de":"Columpio de 3 asientos para ni\u00f1os de 3 a 14 a\u00f1os. Estructura reforzada de acero galvanizado con pintura electrost\u00e1tica al horno. Asientos de polipropileno con cadenas plastificadas de 6 mm. Dise\u00f1ad...","pn":680665,"pi":809991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Columpios/P-102%20Columpio%20Uni2.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-103","no":"Columpio Cu\u00e1druple","sub":"Columpios","de":"Columpio de 4 asientos para m\u00faltiples usuarios simult\u00e1neos. Estructura robusta de acero galvanizado con pintura electrost\u00e1tica. Asientos de polipropileno resistentes a la intemperie. Ideal para pla...","pn":718480,"pi":854991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Columpios/P-103%20Columpio%20dinamico.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-104","no":"Columpio con Nido","sub":"Columpios","de":"Columpio con asiento nido (tipo cesta) para 1-2 ni\u00f1os, permite el juego colaborativo. Estructura de acero galvanizado con pintura electrost\u00e1tica. Asiento de polipropileno rotomoldeado. Fomenta el e...","pn":491589,"pi":584991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Columpios/P-104%20Columpio%20de%20madera.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-105","no":"Columpio Multifuncional","sub":"Columpios","de":"Columpio multifuncional que combina asientos est\u00e1ndar con asiento nido. Estructura de acero galvanizado reforzado con pintura electrost\u00e1tica. Permite distintas edades y tipos de uso simult\u00e1neo. Ide...","pn":831925,"pi":989991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Columpios/P-105%20Columpio%20de%20madera%20tipo%20plato.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-107","no":"Columpio Simple 1 Asiento","sub":"Columpios","de":"No es posible redactar la ficha t\u00e9cnica completa del producto P-107 'Columpio Simple 1 Asiento' de Juegos Planella con la informaci\u00f3n disponible en los resultados de b\u00fasqueda. Aunque se confirma qu...","pn":294950,"pi":350991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Columpios/P-107.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-108","no":"Columpio Doble con Bebe","sub":"Columpios","de":"Columpio doble que combina un asiento est\u00e1ndar y un asiento beb\u00e9 tipo canasto. Estructura de acero galvanizado con pintura electrost\u00e1tica al horno. Cadenas plastificadas anticorrosi\u00f3n. Permite que ...","pn":741169,"pi":881991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Columpios/P-108%20columpio%20cuadruple.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-109","no":"Columpio Triple con Bebe","sub":"Columpios","de":"Medidas Ancho: 600 cm Largo: 300 cm Alto: 320 cm  Capacidad: 3 ni\u00f1os simult\u00e1neamente, rango de edad recomendado de 2 a 12 a\u00f1os.  Materialidad: Estructura de ca\u00f1o de acero galvanizado de 60x2 mm y 4...","pn":983186,"pi":1169991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Columpios/P-109%20columpio%20quintuple.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-110","no":"Columpio 4 Asientos Mix","sub":"Columpios","de":"Columpio de 4 asientos en configuraci\u00f3n mixta (est\u00e1ndar + beb\u00e9). Estructura de acero galvanizado reforzada para alto tr\u00e1fico. Asientos de polipropileno y canasto beb\u00e9. Ideal para plazas p\u00fablicas y ...","pn":983186,"pi":1169991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Columpios/P-110%20columpio%20triple%20de%20madera.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-111","no":"Columpio Doble Reforzado","sub":"Columpios","de":"Columpio doble de estructura reforzada para zonas de alto tr\u00e1fico. Acero galvanizado de mayor espesor con pintura electrost\u00e1tica de alta durabilidad. Asientos de polipropileno resistentes a UV. Dis...","pn":794110,"pi":944991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Columpios/P-111%20Columpio%20circular%20single.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-112","no":"Columpio Triple Reforzado","sub":"Columpios","de":"Columpio triple de estructura reforzada para zonas de alto tr\u00e1fico. Acero galvanizado de mayor espesor con pintura electrost\u00e1tica. 3 asientos de polipropileno resistentes a UV e intemperie. Para pl...","pn":945371,"pi":1124991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Columpios/P-112%20columpio%20circular%20dual.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-400","no":"Columpio Inclusivo Simple","sub":"Inclusivos","de":"Columpio inclusivo con asiento de cesta amplia que permite el uso por personas con movilidad reducida. Estructura de acero galvanizado con pintura electrost\u00e1tica. Dise\u00f1ado bajo normas de inclusi\u00f3n ...","pn":1058816,"pi":1259991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Inclusivos/P-400-%20Columpio%20inclusivo.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-403","no":"Columpio Inclusivo Doble","sub":"Inclusivos","de":"Medidas Ancho: 138 cm Largo: 361 cm Alto: 256 cm  Capacidad: 2 ni\u00f1os de m\u00e1s de 5 a\u00f1os.  Materialidad: Postes de acero galvanizado de 89mm de di\u00e1metro y 2,5mm de espesor.  Pintura/Terminaci\u00f3n: Acaba...","pn":1285707,"pi":1529991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Inclusivos/P-403%20Columpio%20doble%20inclusivo.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-403-B","no":"Columpio Inclusivo Bebe","sub":"Inclusivos","de":"Columpio inclusivo con asiento beb\u00e9 especial de mayor soporte y seguridad. Estructura de acero galvanizado con pintura electrost\u00e1tica. Cadenas plastificadas de seguridad. Dise\u00f1ado para jardines inf...","pn":718480,"pi":854991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Inclusivos/P-403%20Columpio%20doble%20inclusivo.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-200","no":"Carrusel Simple","sub":"Carruseles","de":"Carrusel giratorio para 4 ni\u00f1os de 3 a 12 a\u00f1os. Plataforma de acero galvanizado con superficie antideslizante y barras de agarre. Sistema de rodamiento de baja fricci\u00f3n. Pintura electrost\u00e1tica en c...","pn":680665,"pi":809991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Carruseles/P-200%20.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-201","no":"Carrusel Infantil","sub":"Carruseles","de":"Carrusel infantil compacto para 2-3 ni\u00f1os peque\u00f1os de 3 a 8 a\u00f1os. Plataforma baja de acero galvanizado con barras de sujeci\u00f3n. Sistema de rodamiento seguro y suave. Pintura electrost\u00e1tica. Ideal pa...","pn":340329,"pi":404991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Carruseles/P-201%20.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-202","no":"Carrusel Doble","sub":"Carruseles","de":"Carrusel de mayor tama\u00f1o para 4-6 usuarios. Plataforma de acero galvanizado con superficie antideslizante y m\u00faltiples barras de agarre. Rodamiento central de alta resistencia. Fomenta el juego grup...","pn":415959,"pi":494991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Carruseles/P-202%20carrusel%20space.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-203","no":"Carrusel Triple","sub":"Carruseles","de":"Carrusel triple de gran capacidad para 6-8 usuarios simult\u00e1neos. Estructura de acero galvanizado reforzado con rodamiento industrial de baja mantenci\u00f3n. Superficie antideslizante y barras de sujeci...","pn":642850,"pi":764991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Carruseles/P-203%20.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-204","no":"Carrusel Grande","sub":"Carruseles","de":"Carrusel grande de alta capacidad para 8 o m\u00e1s usuarios. Plataforma amplia de acero galvanizado con m\u00faltiples barras de agarre. Rodamiento industrial de larga vida \u00fatil. Dise\u00f1ado para parques p\u00fabli...","pn":1848731,"pi":2199990,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Carruseles/P-204%20Carrusel%20inclusivo.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-300","no":"Trepador Escalera Simple","sub":"Trepadores","de":"Trepador de escalera simple para ni\u00f1os de 3 a 12 a\u00f1os. Estructura de acero galvanizado con pelda\u00f1os antideslizantes y pintura electrost\u00e1tica. Fomenta el desarrollo de fuerza, coordinaci\u00f3n y confian...","pn":279404,"pi":332491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Trepadores/P-300%20trepador%20igl%C3%BA.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-301","no":"Trepador Arco","sub":"Trepadores","de":"Trepador en forma de arco para ni\u00f1os de 3 a 12 a\u00f1os. Estructura tubular de acero galvanizado con pintura electrost\u00e1tica. Fomenta la motricidad gruesa, equilibrio y coordinaci\u00f3n. Dise\u00f1o compacto ide...","pn":191589,"pi":227991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Trepadores/P-301%20trepador%20curvo.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-302","no":"Trepador Cuadrado","sub":"Trepadores","de":"Trepador de forma cuadrada con m\u00faltiples puntos de agarre. Estructura de acero galvanizado con pintura electrost\u00e1tica en colores vivos. Desarrolla fuerza, coordinaci\u00f3n y habilidades motoras en ni\u00f1o...","pn":199572,"pi":237491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Trepadores/P-302%20trepador%20rectangular.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-303","no":"Trepador Red","sub":"Trepadores","de":"Trepador tipo red met\u00e1lica para ni\u00f1os de 3 a 14 a\u00f1os. Red de cables de acero inoxidable tensada en estructura galvanizada. Fomenta el equilibrio, la fuerza y la coordinaci\u00f3n. Dise\u00f1o moderno ideal p...","pn":279404,"pi":332491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Trepadores/P-303%20trepador%20torrre.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-304","no":"Trepador Pir\u00e1mide","sub":"Trepadores","de":"Trepador piramidal de barras para ni\u00f1os de 3 a 12 a\u00f1os. Estructura de acero galvanizado en forma de pir\u00e1mide con m\u00faltiples rutas de ascenso. Pintura electrost\u00e1tica en colores vivos. Desarrolla fuer...","pn":263437,"pi":313491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Trepadores/P-304%20trepador%20elefante.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-305","no":"Trepador Espiral","sub":"Trepadores","de":"Trepador en espiral para ni\u00f1os de 3 a 12 a\u00f1os. Estructura tubular de acero galvanizado en forma helicoidal. Pintura electrost\u00e1tica resistente a la intemperie. Fomenta el desarrollo de equilibrio, f...","pn":271421,"pi":322991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Trepadores/P-305%20trepador%20caracol.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-306","no":"Trepador Doble","sub":"Trepadores","de":"Trepador doble con dos recorridos de ascenso independientes. Estructura de acero galvanizado con pintura electrost\u00e1tica. Permite el uso simult\u00e1neo de varios ni\u00f1os de 3 a 12 a\u00f1os. Dise\u00f1ado para plaz...","pn":315328,"pi":375241,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Trepadores/P-306Trepador%20cuncuna.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-307","no":"Trepador Torre","sub":"Trepadores","de":"Trepador tipo torre de acero galvanizado con m\u00faltiples niveles de ascenso. Estructura robusta con pintura electrost\u00e1tica al horno. Ofrece distintos niveles de dificultad para ni\u00f1os de 5 a 14 a\u00f1os. ...","pn":471000,"pi":560491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Trepadores/P-307%20trepador%20auto.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-308","no":"Trepador con Tobog\u00e1n","sub":"Trepadores","de":"Trepador combinado con tobog\u00e1n integrado. Estructura de acero galvanizado con rampa de ascenso y tobog\u00e1n de descenso. Pintura electrost\u00e1tica. Fomenta el ejercicio activo en ni\u00f1os de 3 a 12 a\u00f1os. Id...","pn":319320,"pi":379991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Trepadores/P-308%20trepador%20bus.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-309","no":"Trepador Modular","sub":"Trepadores","de":"Trepador modular de gran envergadura con m\u00faltiples elementos de ascenso. Estructura de acero galvanizado modular ampliable. Pintura electrost\u00e1tica en colores vivos. Para ni\u00f1os de 5 a 14 a\u00f1os. Ideal...","pn":638647,"pi":759991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Trepadores/P-309%20trepador%20tren.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-310","no":"Trepador Horizontal","sub":"Trepadores","de":"Trepador horizontal tipo pasamanos o monkey bars. Barras de acero galvanizado horizontales a distintas alturas. Pintura electrost\u00e1tica. Desarrolla fuerza de brazos y coordinaci\u00f3n en ni\u00f1os de 5 a 14...","pn":311337,"pi":370491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Trepadores/P-310%20trepadores%20circulares.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-311","no":"Trepador Infantil","sub":"Trepadores","de":"Trepador compacto para ni\u00f1os peque\u00f1os de 3 a 8 a\u00f1os. Estructura de acero galvanizado de baja altura con pintura electrost\u00e1tica. Dise\u00f1ado con medidas de seguridad para los m\u00e1s peque\u00f1os. Ideal para j...","pn":231505,"pi":275491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Trepadores/P-311%20.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-450","no":"Resorte Animal Simple","sub":"Resortes","de":"Juego de resorte con figura de animal simple para 1 ni\u00f1o de 2 a 8 a\u00f1os. Figura de polietileno rotomoldeado sobre resorte de acero inoxidable anclado al suelo. Colores vivos resistentes a UV. Ideal ...","pn":471000,"pi":560491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Resortes/P-450%20Resorte%20avion%20inclusivo.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-451","no":"Resorte Animal Doble","sub":"Resortes","de":"Juego de resorte doble con dos figuras de animales para uso simult\u00e1neo de 2 ni\u00f1os. Figuras de polietileno rotomoldeado sobre resortes de acero inoxidable. Colores vivos resistentes a UV e intemperi...","pn":471000,"pi":560491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Resortes/P-451-%20Resorte%20elefante%20inclusivo.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-452","no":"Resorte Bicicleta","sub":"Resortes","de":"Juego de resorte con figura de bicicleta para 1-2 ni\u00f1os de 2 a 8 a\u00f1os. Estructura de polietileno rotomoldeado sobre resorte de acero inoxidable. Fomenta el juego imaginativo y el equilibrio din\u00e1mic...","pn":311337,"pi":370491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Resortes/P-452%20Resorte%20auto.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-453","no":"Resorte Moto","sub":"Resortes","de":"Juego de resorte con figura de moto para 1-2 ni\u00f1os de 2 a 8 a\u00f1os. Figura de polietileno rotomoldeado en forma de motocicleta sobre resorte de acero inoxidable. Estimula la imaginaci\u00f3n y el equilibr...","pn":311337,"pi":370491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Resortes/P-453%20Resorte%20ballena.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-454","no":"Resorte Infantil Simple","sub":"Resortes","de":"Juego de resorte infantil simple para 1 ni\u00f1o de 1 a 6 a\u00f1os. Figura peque\u00f1a de polietileno rotomoldeado sobre resorte de acero inoxidable de menor tama\u00f1o. Dise\u00f1ado especialmente para los m\u00e1s peque\u00f1o...","pn":215538,"pi":256491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Resortes/P-454%20Resorte%20mariposa.png","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-455","no":"Resorte Infantil Doble","sub":"Resortes","de":"Juego de resorte infantil doble para 2 ni\u00f1os peque\u00f1os de 1 a 6 a\u00f1os. Dos figuras de polietileno rotomoldeado sobre resortes de acero inoxidable. Fomenta el juego paralelo en edades tempranas. Ideal...","pn":215538,"pi":256491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Resortes/P-455%20Resorte%20moto.png","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-501","no":"Juego Musical Tambor","sub":"Juegos Musicales","de":"Juego musical exterior tipo tambor para ni\u00f1os de 3 a 12 a\u00f1os. Membrana de acero inoxidable con varillas de percusi\u00f3n. Estructura de acero galvanizado con pintura electrost\u00e1tica. Estimula el desarro...","pn":806716,"pi":959992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20musicales/P-501-%20Panel%20musical.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-502","no":"Juego Musical Xilof\u00f3n","sub":"Juegos Musicales","de":"Xilof\u00f3n exterior de acero inoxidable con teclas de distintos tonos. Estructura de acero galvanizado con pintura electrost\u00e1tica. Para ni\u00f1os y adultos. Estimula el desarrollo musical, cognitivo y la ...","pn":1075624,"pi":1279992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20musicales/P-502-%20Xilofono%20inclusivo.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-503","no":"Juego Musical Campanas","sub":"Juegos Musicales","de":"Juego musical exterior tipo campanas de tubo. Tubos de acero inoxidable de distintos di\u00e1metros y tonos. Estructura de acero galvanizado. Estimula el desarrollo auditivo y la expresi\u00f3n musical en ni...","pn":605035,"pi":719992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20musicales/P-503-Drum%20set.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-504","no":"Juego Musical Panel","sub":"Juegos Musicales","de":"Panel musical exterior con m\u00faltiples instrumentos integrados. Estructura de acero galvanizado con varios elementos sonoros (tambor, xilof\u00f3n, campanas). Para ni\u00f1os de 3 a 12 a\u00f1os. Estimula la creati...","pn":1008397,"pi":1199992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20musicales/P-504%20Eco%20rain%20wheel.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-505","no":"Juego Musical Teclado","sub":"Juegos Musicales","de":"Teclado musical exterior con teclas de acero inoxidable de distintos tonos. Estructura de acero galvanizado con pintura electrost\u00e1tica. Para ni\u00f1os de 3 a 14 a\u00f1os. Fomenta la expresi\u00f3n musical y el ...","pn":840328,"pi":999990,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20musicales/P-505%20eco%20tongue%20drum.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-506","no":"Juego Musical Bong\u00f3s","sub":"Juegos Musicales","de":"Juego musical exterior tipo bong\u00f3s de acero inoxidable. Dos tambores de distintos tama\u00f1os y tonos montados en estructura galvanizada. Para ni\u00f1os de 3 a 12 a\u00f1os. Estimula el ritmo, la coordinaci\u00f3n y...","pn":705876,"pi":839992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20musicales/P-506%20three%20congas.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-507","no":"Juego Musical Platillo","sub":"Juegos Musicales","de":"Juego musical exterior tipo platillos de acero inoxidable. Platillos de distintos tama\u00f1os montados en estructura galvanizada. Para ni\u00f1os de 3 a 12 a\u00f1os. Fomenta el sentido del ritmo y la experiment...","pn":605035,"pi":719992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20musicales/P-507%20mesa%20de%20tambores.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-508","no":"Panel Musical Completo","sub":"Juegos Musicales","de":"Panel musical completo con amplia gama de instrumentos exteriores integrados. Estructura de acero galvanizado con xilof\u00f3n, tambores, campanas y platillos. Para ni\u00f1os y adultos. Instalaci\u00f3n para pla...","pn":2016800,"pi":2399992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20musicales/P-508%20Telefono%20dinamico.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-509","no":"Juego Musical Combo","sub":"Juegos Musicales","de":"Conjunto musical exterior combinado con varios instrumentos de percusi\u00f3n. Estructura de acero galvanizado con m\u00faltiples elementos sonoros. Para ni\u00f1os de 3 a 12 a\u00f1os. Estimula la creatividad, el jue...","pn":873943,"pi":1039992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20musicales/P-509%20Xilofono.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-601","no":"Din\u00e1mico Giratorio","sub":"Dinamicos","de":"Juego din\u00e1mico giratorio tipo disco para ni\u00f1os de 5 a 12 a\u00f1os. Plataforma circular de acero galvanizado con superficie antideslizante y sistema de rotaci\u00f3n suave. Fomenta el equilibrio y la coordin...","pn":271421,"pi":322991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Dinamicos/P-601%20panel%20didactico%20gato.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-602","no":"Din\u00e1mico Balanceo","sub":"Dinamicos","de":"Juego din\u00e1mico de balanceo tipo tabla o surf para ni\u00f1os de 3 a 10 a\u00f1os. Superficie de polietileno sobre base de acero galvanizado. Movimiento multidireccional suave. Estimula el equilibrio y el des...","pn":100832,"pi":119990,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Dinamicos/P-602-%20tambor%20inclusivo.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-600","no":"Din\u00e1mico Plataforma","sub":"Dinamicos","de":"Juego din\u00e1mico tipo plataforma giratoria o caminante para ni\u00f1os de 5 a 12 a\u00f1os. Estructura de acero galvanizado con plataforma de polietileno antideslizante. Fomenta el equilibrio, la coordinaci\u00f3n ...","pn":303353,"pi":360991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20plaza%20clasicos/Dinamicos/P-600%20Botones%20de%20equilibrio.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-711","no":"Street Fitness Prensa","sub":"Street Fitness","de":"M\u00e1quina de ejercicio exterior tipo prensa de piernas para adultos. Estructura de acero galvanizado con pintura electrost\u00e1tica. Sistema de resistencia hidr\u00e1ulica o mec\u00e1nica. Ideal para circuitos de ...","pn":378076,"pi":449910,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Street%20Fitness/P-711%20barras%20altas.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-702","no":"Street Fitness Doble","sub":"Street Fitness","de":"Estaci\u00f3n de ejercicio doble para 2 usuarios simult\u00e1neos. Estructura de acero galvanizado con pintura electrost\u00e1tica al horno. Combina 2 ejercicios distintos en una sola unidad. Ideal para circuitos...","pn":1361269,"pi":1619910,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Street%20Fitness/P-702%20.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-701","no":"Street Fitness Barra","sub":"Street Fitness","de":"M\u00e1quina de ejercicio exterior tipo barra fija o dominadas para adultos. Estructura de acero galvanizado con barras de acero inoxidable. Permite ejercicios de tracci\u00f3n y fortalecimiento de tren supe...","pn":907487,"pi":1079910,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Street%20Fitness/P-701%20.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-703","no":"Street Fitness Triple","sub":"Street Fitness","de":"Estaci\u00f3n de ejercicio triple para 3 usuarios simult\u00e1neos. Estructura de acero galvanizado con pintura electrost\u00e1tica. Combina 3 ejercicios distintos de musculaci\u00f3n y cardio. Ideal para circuitos de...","pn":1512529,"pi":1799910,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Street%20Fitness/P-703.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-704","no":"Street Fitness Estaci\u00f3n","sub":"Street Fitness","de":"Estaci\u00f3n de ejercicio completa con m\u00faltiples funciones para grupos. Estructura de acero galvanizado reforzada con pintura electrost\u00e1tica. Combina 4 o m\u00e1s ejercicios distintos. Para parques p\u00fablicos...","pn":2646983,"pi":3149910,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Street%20Fitness/P-704.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-705","no":"Street Fitness El\u00edptica","sub":"Street Fitness","de":"M\u00e1quina de ejercicio exterior tipo el\u00edptica para adultos. Estructura de acero galvanizado con sistema de movimiento el\u00edptico de bajo impacto. Ideal para ejercicio cardiovascular al aire libre. Para...","pn":831857,"pi":989910,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Street%20Fitness/P-705.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-706","no":"Street Fitness Remo","sub":"Street Fitness","de":"M\u00e1quina de ejercicio exterior tipo remo para adultos. Estructura de acero galvanizado con sistema de resistencia. Trabaja musculatura de espalda, brazos y core. Ideal para circuitos de street fitne...","pn":1663790,"pi":1979910,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Street%20Fitness/P-706.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-707","no":"Street Fitness Accesorio","sub":"Street Fitness","de":"Accesorio para circuito de street fitness. Elemento complementario de acero galvanizado (barras bajas, steps, paralelas, etc.). Dise\u00f1ado para integrarse a circuitos de ejercicio existentes en parqu...","pn":143622,"pi":170910,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Street%20Fitness/P-707%20barras%20paralelas.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-708","no":"Street Fitness Banco","sub":"Street Fitness","de":"Banco de entrenamiento exterior para street fitness. Estructura de acero galvanizado con asiento de polietileno o tabl\u00f3n de madera tratada. Permite ejercicios de sentadilla, fondos y elongaci\u00f3n. Pa...","pn":189000,"pi":224910,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Street%20Fitness/P-708%20barra%20de%20salto.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-709","no":"Street Fitness Bici","sub":"Street Fitness","de":"M\u00e1quina de ejercicio exterior tipo bicicleta estacionaria para adultos. Estructura de acero galvanizado con sistema de pedaleo de bajo impacto. Ideal para ejercicio cardiovascular al aire libre en ...","pn":393202,"pi":467910,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Street%20Fitness/P-709%20banca%20abdominales.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-710","no":"Street Fitness Stepper","sub":"Street Fitness","de":"M\u00e1quina de ejercicio exterior tipo stepper o escalador para adultos. Estructura de acero galvanizado con sistema de pistoneo alternado. Trabaja tren inferior y cardiovascular. Para circuitos de fit...","pn":226815,"pi":269910,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Street%20Fitness/P-710%20barra%20de%20flexiones.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-712","no":"Street Fitness Combinado","sub":"Street Fitness","de":"Estaci\u00f3n de ejercicio combinada con 2 funciones distintas en una sola unidad. Estructura de acero galvanizado con pintura electrost\u00e1tica. Optimiza el espacio en circuitos de fitness urbano. Para pa...","pn":249504,"pi":296910,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Street%20Fitness/P-712%20escalera%20vertical.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-713","no":"Street Fitness Caminador","sub":"Street Fitness","de":"M\u00e1quina de ejercicio exterior tipo caminador o esqu\u00ed de fondo para adultos. Estructura de acero galvanizado con movimiento pendular de bajo impacto. Ideal para ejercicio cardiovascular al aire libr...","pn":446211,"pi":530991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Street%20Fitness/P-713%20pasamanos.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-800","no":"Mesa Juego 2 Personas","sub":"Mesas","de":"Mesa de juego exterior para 2 personas con tablero integrado de ajedrez o damas. Estructura de acero galvanizado con pintura electrost\u00e1tica. Tablero de polietileno resistente a UV. Para plazas p\u00fabl...","pn":359236,"pi":427491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Mesas/P-800%20mesa%20de%20picnic%20octogonal.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-801","no":"Mesa Juego 4 Personas","sub":"Mesas","de":"Mesa de juego exterior para 4 personas con tablero de juego integrado. Estructura de acero galvanizado con pintura electrost\u00e1tica. Tablero de polietileno resistente a intemperie. Fomenta la interac...","pn":463017,"pi":550991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Mesas/P-801%20Mesa%20metalica%20cuadrada.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-802","no":"Mesa Picnic Simple","sub":"Mesas","de":"Mesa de picnic simple de acero galvanizado con 2 bancas integradas. Pintura electrost\u00e1tica resistente a la intemperie. Capacidad para 4-6 personas. Ideal para \u00e1reas verdes, parques y plazas p\u00fablicas.","pn":399152,"pi":474991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Mesas/P-802%20Mesa%20metalica%20rectangular.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-803","no":"Mesa Picnic con Techo","sub":"Mesas","de":"Mesa de picnic con techo protector de acero galvanizado con 2 bancas integradas y cubierta parasol. Protecci\u00f3n solar y lluvia. Capacidad 4-6 personas. Ideal para parques, plazas y \u00e1reas verdes de u...","pn":558816,"pi":664991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Mesas/P-803%20Mesa%20metalica%20circular.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-804","no":"Mesa Ajedrez","sub":"Mesas","de":"Mesa exterior con tablero de ajedrez o juego grabado en la superficie. Estructura de acero galvanizado con pintura electrost\u00e1tica. Asientos integrados. Fomenta el juego intelectual al aire libre en...","pn":662597,"pi":788491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Mesas/P-804%20Mesa%20de%20picnic%20Fierro%20con%20madera.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-805","no":"Mesa Infantil","sub":"Mesas","de":"Mesa infantil exterior de baja altura para ni\u00f1os de 3 a 10 a\u00f1os. Estructura de acero galvanizado con pintura electrost\u00e1tica en colores vivos. Asientos integrados de polietileno. Para patios de cole...","pn":231505,"pi":275491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Mesas/P-805%20mesa%20de%20picnic.jpeg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-806","no":"Mesa Ping Pong Exterior","sub":"Mesas","de":"Mesa de ping pong exterior de concreto o acero inoxidable con red met\u00e1lica central. Estructura robusta resistente al vandalismo y la intemperie. Para plazas p\u00fablicas, parques y condominios que prom...","pn":372009,"pi":442691,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Mesas/P-806%20Mesa%20ajedrez%20plaza.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-807","no":"Mesa Redonda Exterior","sub":"Mesas","de":"Mesa redonda exterior de acero galvanizado con asientos integrados. Dise\u00f1o circular que facilita la conversaci\u00f3n y la interacci\u00f3n. Pintura electrost\u00e1tica resistente a UV. Para plazas, parques y \u00e1re...","pn":359236,"pi":427491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Mesas/P-807%20Mesa%20de%20ajedrez%20antivandalica.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-808","no":"Mesa Hexagonal","sub":"Mesas","de":"Mesa hexagonal exterior de acero galvanizado que permite 6 asientos perimetrales. Dise\u00f1o moderno y funcional con pintura electrost\u00e1tica. Para plazas p\u00fablicas, parques y espacios de encuentro comuni...","pn":678563,"pi":807491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Mesas/P-808%20Mesa%20de%20ping%20pong%20antivandalica.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-850","no":"Esca\u00f1o Simple","sub":"Escanos","de":"Esca\u00f1o simple de acero galvanizado sin respaldo. Estructura tubular con asiento de listones de madera tratada o polietileno. Dise\u00f1o cl\u00e1sico de bajo mantenimiento. Para plazas, parques y senderos pe...","pn":181505,"pi":215991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Esca%C3%B1os/P-850%20.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-851","no":"Esca\u00f1o con Respaldo","sub":"Escanos","de":"Esca\u00f1o con respaldo de acero galvanizado y listones de madera tratada o polietileno. Dise\u00f1o ergon\u00f3mico para mayor confort. Pintura electrost\u00e1tica. Para plazas, parques y \u00e1reas de descanso en espaci...","pn":294950,"pi":350991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Esca%C3%B1os/P-851.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-852","no":"Esca\u00f1o Doble","sub":"Escanos","de":"Esca\u00f1o doble de acero galvanizado para 4-6 personas. Listones de madera tratada o polietileno. Mayor longitud para grupos. Pintura electrost\u00e1tica resistente a la intemperie. Para plazas y \u00e1reas de ...","pn":268480,"pi":319491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Esca%C3%B1os/P-852%20Esca%C3%B1o%20budapest.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-853","no":"Esca\u00f1o Infantil","sub":"Escanos","de":"Esca\u00f1o de baja altura para ni\u00f1os. Estructura de acero galvanizado con asiento de polietileno o madera. Dimensiones reducidas adaptadas a la escala infantil. Para patios de colegios, jardines infant...","pn":143690,"pi":170991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Esca%C3%B1os/P-853%20Esca%C3%B1o%20antivandalico.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-854","no":"Esca\u00f1o Largo","sub":"Escanos","de":"Esca\u00f1o largo de acero galvanizado para 6-8 personas. Listones de madera tratada o polietileno de alta densidad. Ideal para espacios de alta concurrencia como parques, plazas y \u00e1reas deportivas.","pn":370581,"pi":440991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Esca%C3%B1os/P-854%20esca%C3%B1o%20miami.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-855","no":"Esca\u00f1o Moderno","sub":"Escanos","de":"Esca\u00f1o de dise\u00f1o moderno en acero galvanizado con l\u00edneas contempor\u00e1neas. Listones de madera tratada o polietileno. Pintura electrost\u00e1tica. Para proyectos urbanos de dise\u00f1o, plazas modernas y espaci...","pn":181505,"pi":215991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Esca%C3%B1os/P-855%20Esca%C3%B1o%20Vento.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-856","no":"Esca\u00f1o con Brazos","sub":"Escanos","de":"Esca\u00f1o con brazos laterales de acero galvanizado. Listones de madera tratada o polietileno. Los brazos facilitan el apoyo al sentarse y levantarse. Especialmente \u00fatil para adultos mayores en plazas...","pn":393270,"pi":467991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Esca%C3%B1os/P-856.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-857","no":"Esca\u00f1o Hexagonal","sub":"Escanos","de":"Esca\u00f1o hexagonal de acero galvanizado con 6 plazas alrededor de un \u00e1rbol o elemento central. Dise\u00f1o que fomenta la interacci\u00f3n social. Listones de madera tratada. Para plazas arborizadas y parques ...","pn":453774,"pi":539991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Esca%C3%B1os/P-857.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-858","no":"Esca\u00f1o Madera","sub":"Escanos","de":"Esca\u00f1o de madera tratada con estructura de acero galvanizado. Listones de madera impregnada de alta durabilidad. Aspecto natural y c\u00e1lido. Para plazas, parques y espacios donde se busca integraci\u00f3n...","pn":226883,"pi":269991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Esca%C3%B1os/P-858%20Esca%C3%B1os%20antivandalico%20inclusivo.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-859","no":"Esca\u00f1o con Mesa","sub":"Escanos","de":"Esca\u00f1o con mesa lateral integrada de acero galvanizado. Combina zona de descanso y superficie de apoyo. Listones de madera tratada. Para plazas, parques y espacios de descanso en \u00e1reas p\u00fablicas.","pn":242009,"pi":287991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Esca%C3%B1os/P-859%20Esca%C3%B1o%20plaza.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-860","no":"Esca\u00f1o Curvo","sub":"Escanos","de":"Esca\u00f1o curvo de acero galvanizado que se adapta a espacios circulares o irregulares. Listones de madera tratada o polietileno. Dise\u00f1o flexible para plazas con elementos centrales como fuentes, escu...","pn":226883,"pi":269991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Esca%C3%B1os/P-860%20Esca%C3%B1o%20tempo.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-861","no":"Esca\u00f1o Plaza","sub":"Escanos","de":"Esca\u00f1o de plaza de acero galvanizado con respaldo y apoyabrazos. Dise\u00f1o cl\u00e1sico de mobiliario urbano con listones de madera tratada. Para plazas p\u00fablicas, bulevares y \u00e1reas de descanso en espacios ...","pn":249572,"pi":296991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Esca%C3%B1os/P-861%20esca%C3%B1o%20tempo%20inclusivo.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-862","no":"Esca\u00f1o B\u00e1sico","sub":"Escanos","de":"Esca\u00f1o b\u00e1sico de acero galvanizado para 2-3 personas. Dise\u00f1o simple y funcional con asiento de polietileno o madera. De bajo costo y alta durabilidad. Para equipamiento de parques, plazas y sendero...","pn":158816,"pi":188991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Esca%C3%B1os/P-862%20esca%C3%B1o%20ma%C3%B1io.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-863","no":"Esca\u00f1o Reforzado","sub":"Escanos","de":"Esca\u00f1o reforzado de acero galvanizado de mayor espesor para zonas de alto tr\u00e1fico o riesgo de vandalismo. Asiento de polietileno macizo. Perner\u00eda especial. Para plazas de alto uso, estaciones de me...","pn":189068,"pi":224991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Esca%C3%B1os/P-863%20esca%C3%B1o%20ma%C3%B1io%20inclusivo.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-864","no":"Esca\u00f1o Jardinera","sub":"Escanos","de":"Esca\u00f1o con jardinera integrada de acero galvanizado. Combina zona de asiento con espacio para vegetaci\u00f3n. Dise\u00f1o que integra naturaleza y mobiliario urbano. Para plazas, parques y proyectos de pais...","pn":178480,"pi":212391,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Esca%C3%B1os/P-864%20Esca%C3%B1o%20alerce%20inclusivo.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-865","no":"Esca\u00f1o Largo con Mesa","sub":"Escanos","de":"Esca\u00f1o largo con mesa central integrada de acero galvanizado. Listones de madera tratada o polietileno. Permite el uso simult\u00e1neo como lugar de descanso y superficie de apoyo para grupos. Para parq...","pn":276799,"pi":329391,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Esca%C3%B1os/P-865%20esca%C3%B1o%20alcerce%20inclusivo.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-900","no":"Banca Simple","sub":"Bancas","de":"Banca simple exterior de acero galvanizado sin respaldo para 2-3 personas. Asiento de listones de madera tratada o polietileno. Dise\u00f1o funcional y de bajo mantenimiento. Para parques, senderos y es...","pn":90749,"pi":107991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Bancas/P-900.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-901","no":"Banca B\u00e1sica","sub":"Bancas","de":"Banca b\u00e1sica exterior de acero galvanizado para 1-2 personas. Dise\u00f1o compacto de bajo costo. Asiento de madera tratada o polietileno. Para equipamiento de jardines, senderos y peque\u00f1os espacios de ...","pn":75623,"pi":89991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Bancas/P-901.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-902","no":"Banca con Respaldo","sub":"Bancas","de":"Banca con respaldo de acero galvanizado para 2-3 personas. Listones de madera tratada o polietileno. Dise\u00f1o ergon\u00f3mico con mayor confort. Para plazas, parques y \u00e1reas de descanso en espacios p\u00fablicos.","pn":189068,"pi":224991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Bancas/P-902.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-903","no":"Banca Madera","sub":"Bancas","de":"Banca de madera tratada con estructura de acero galvanizado. Aspecto natural y c\u00e1lido con alta durabilidad. Impregnaci\u00f3n protectora contra hongos e insectos. Para plazas, parques y proyectos de int...","pn":219320,"pi":260991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Bancas/P-903.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-904","no":"Banca Larga","sub":"Bancas","de":"Banca larga de acero galvanizado para 4-6 personas. Listones de madera tratada de gran largo. Mayor capacidad para espacios de alta concurrencia. Para parques, plazas, estadios y \u00e1reas deportivas.","pn":302513,"pi":359991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Bancas/P-904.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-905","no":"Banca Infantil","sub":"Bancas","de":"Banca infantil de baja altura para ni\u00f1os de 3 a 10 a\u00f1os. Estructura de acero galvanizado con asiento de madera tratada o polietileno. Dimensiones reducidas para la escala infantil. Para colegios, j...","pn":109656,"pi":130491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Bancas/P-905%20banca%20olivo.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-906","no":"Banca Plaza","sub":"Bancas","de":"Banca de plaza con respaldo y apoyabrazos de acero galvanizado. Dise\u00f1o cl\u00e1sico de mobiliario urbano con listones de madera tratada. Para plazas, bulevares y \u00e1reas de descanso en espacios p\u00fablicos d...","pn":204194,"pi":242991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Bancas/P-906%20banca%20arrayan.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-950","no":"Basurero Simple","sub":"Basureros","de":"Papelera exterior simple de acero galvanizado con pintura electrost\u00e1tica. Boca superior fija o con tapa abatible. Capacidad media. Anclaje al suelo. Para parques, plazas y espacios p\u00fablicos de uso ...","pn":71841,"pi":85491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Basureros/P-950.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-951","no":"Basurero con Tapa","sub":"Basureros","de":"Papelera exterior con tapa de acero galvanizado y pintura electrost\u00e1tica. Tapa articulada que protege de la lluvia y reduce la dispersi\u00f3n de residuos. Para parques, plazas y espacios p\u00fablicos con l...","pn":95790,"pi":113991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Basureros/P-951.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-952","no":"Basurero Doble","sub":"Basureros","de":"Papelera exterior doble de acero galvanizado para segregaci\u00f3n de residuos (org\u00e1nico/inorg\u00e1nico). Dos bocas independientes. Ideal para programas de reciclaje en plazas y parques p\u00fablicos.","pn":111757,"pi":132991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Basureros/P-952.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-953","no":"Basurero B\u00e1sico","sub":"Basureros","de":"Papelera exterior b\u00e1sica de acero galvanizado de bajo costo. Dise\u00f1o simple y funcional. Capacidad est\u00e1ndar. Para equipamiento b\u00e1sico de senderos, \u00e1reas verdes y espacios p\u00fablicos de bajo tr\u00e1fico.","pn":63858,"pi":75991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Basureros/P-953.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-954","no":"Basurero Met\u00e1lico","sub":"Basureros","de":"Papelera exterior met\u00e1lica de acero inoxidable o galvanizado de alta resistencia. Dise\u00f1o antivandalismo con anclaje reforzado. Para zonas de alto tr\u00e1fico, estaciones de transporte y espacios p\u00fablic...","pn":107765,"pi":128241,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Basureros/P-954.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-955","no":"Basurero Grande","sub":"Basureros","de":"Papelera exterior grande de acero galvanizado con mayor capacidad de residuos. Boca amplia con tapa. Para plazas, parques y espacios de alto tr\u00e1fico que requieren mayor frecuencia entre vaciados.","pn":231505,"pi":275491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Basureros/P-955.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-956","no":"Basurero Reciclaje","sub":"Basureros","de":"Papelera exterior de reciclaje con 3 compartimentos para vidrio, pl\u00e1stico y papel. Estructura de acero galvanizado con indicadores de color. Para programas de reciclaje en plazas, parques y espacio...","pn":83816,"pi":99741,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Basureros/P-956%20basurero%20capsular%20plastico.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-957","no":"Basurero Plaza","sub":"Basureros","de":"Papelera de plaza de dise\u00f1o urbano en acero galvanizado con acabado est\u00e9tico. Tapa articulada y anclaje al suelo. Para plazas, parques y proyectos de renovaci\u00f3n urbana donde se requiere mobiliario ...","pn":239488,"pi":284991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Basureros/P-957%20.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-958","no":"Basurero Colgante","sub":"Basureros","de":"Papelera colgante de acero galvanizado para montaje en postes o muros. Dise\u00f1o compacto sin ocupar espacio en el suelo. Para senderos, ciclov\u00edas, paseos y espacios urbanos con restricci\u00f3n de espacio...","pn":124530,"pi":148191,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Basureros/P-958%20Basurero%20roble.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1001","no":"Juego Modular B\u00e1sico","sub":"Juegos Modulares","de":"Juego modular b\u00e1sico de acero galvanizado con 1 torre, tobog\u00e1n y escalera. Estructura para 5-8 ni\u00f1os de 3 a 12 a\u00f1os. Plataformas de polietileno y pintura electrost\u00e1tica. Ideal para plazas residenci...","pn":1512597,"pi":1799991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20Modulares/P-1001/Juego%20modular%2074.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1002","no":"Juego Modular Intermedio","sub":"Juegos Modulares","de":"Juego modular intermedio con 2 torres, tobog\u00e1n, escalera y puente. Estructura de acero galvanizado para 8-12 ni\u00f1os de 3 a 12 a\u00f1os. Plataformas de polietileno. Para plazas p\u00fablicas, colegios y condo...","pn":1613439,"pi":1919992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20Modulares/P-1002/Juego%20modular%2001.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1003","no":"Juego Modular Completo","sub":"Juegos Modulares","de":"Juego modular completo con m\u00faltiples elementos: torres, toboganes, escaleras, puentes y trepadoras. Estructura de acero galvanizado para 15+ ni\u00f1os de 3 a 14 a\u00f1os. Para parques p\u00fablicos, colegios y ...","pn":1747892,"pi":2079992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20Modulares/P-1003/Juego%20modular%2023.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1004","no":"Juego Modular Doble Torre","sub":"Juegos Modulares","de":"Juego modular de doble torre con tobog\u00e1n doble y m\u00faltiples accesorios. Estructura de acero galvanizado para 10-15 ni\u00f1os de 3 a 14 a\u00f1os. Plataformas de polietileno con pintura electrost\u00e1tica. Para p...","pn":1613439,"pi":1919992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20Modulares/P-1004/Juego%20modular%2003.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1005","no":"Juego Modular Grande","sub":"Juegos Modulares","de":"Juego modular grande con 3 o m\u00e1s torres y gran variedad de accesorios l\u00fadicos. Estructura de acero galvanizado para 20+ ni\u00f1os de 3 a 14 a\u00f1os. Para parques p\u00fablicos de gran superficie y colegios de ...","pn":4068286,"pi":4841260,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20Modulares/P-1005/Juego%20modular%2035.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1006","no":"Juego Modular Premium","sub":"Juegos Modulares","de":"Juego modular premium con dise\u00f1o personalizado y m\u00e1xima variedad de elementos. Estructura de acero galvanizado de alta especificaci\u00f3n para 20+ ni\u00f1os. Toboganes especiales, trepadoras y puentes colg...","pn":3829404,"pi":4556991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20Modulares/P-1006/Juego%20modular%2056.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1007","no":"Juego Modular XL","sub":"Juegos Modulares","de":"Juego modular XL de gran envergadura con m\u00faltiples torres y amplia variedad de accesorios. Estructura de acero galvanizado para 30+ ni\u00f1os de 3 a 14 a\u00f1os. Para grandes parques p\u00fablicos y proyectos r...","pn":4386547,"pi":5219991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20Modulares/P-1007/Juego%20modular%2012.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1008","no":"Juego Modular XXL","sub":"Juegos Modulares","de":"Juego modular XXL de m\u00e1xima escala con 4+ torres y todo tipo de accesorios l\u00fadicos. Estructura de acero galvanizado de alta especificaci\u00f3n. Para parques emblem\u00e1ticos, centros de entretenimiento y p...","pn":9774168,"pi":11631260,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20Modulares/P-1008/Juego%20modular%2006.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1020","no":"Juego Modular Combinado","sub":"Juegos Modulares","de":"Juego modular combinado que integra juegos de plaza cl\u00e1sicos (columpios, toboganes) con estructura modular. Acero galvanizado con plataformas de polietileno. Para plazas p\u00fablicas que requieren m\u00e1xi...","pn":4571422,"pi":5439992,"im":"assets/img/Catalogo-Juegos/Juegos%20Modulares/P-1001/Juego%20modular%2074.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1022","no":"Juego Modular Robusto","sub":"Juegos Modulares","de":"Juego modular robusto de acero galvanizado con mayor espesor de pared tubular para zonas de alto vandalismo o uso intensivo. Dise\u00f1o reforzado con plataformas de polietileno macizo. Para parques urb...","pn":3200000,"pi":3808000,"im":"assets/img/Catalogo-Juegos/Juegos%20Modulares/P-1001/Juego%20modular%2074.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1023","no":"Juego Modular Mediano","sub":"Juegos Modulares","de":"Juego modular mediano con 2 torres, tobog\u00e1n y accesorios l\u00fadicos variados. Estructura de acero galvanizado para 10-15 ni\u00f1os de 3 a 12 a\u00f1os. Para plazas p\u00fablicas de tama\u00f1o medio, colegios y condomin...","pn":2600000,"pi":3094000,"im":"assets/img/Catalogo-Juegos/Juegos%20Modulares/P-1001/Juego%20modular%2074.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1024","no":"Juego Modular Especial","sub":"Juegos Modulares","de":"Juego modular especial con dise\u00f1o diferenciado, puede incluir elementos tem\u00e1ticos o de dise\u00f1o personalizado. Estructura de acero galvanizado de alta calidad. Para proyectos municipales, plazas embl...","pn":3800000,"pi":4522000,"im":"assets/img/Catalogo-Juegos/Juegos%20Modulares/P-1001/Juego%20modular%2074.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1101","no":"M\u00e1quina Ejercicio El\u00edptica","sub":"Maquinas Ejercicio","de":"M\u00e1quina de ejercicio exterior tipo el\u00edptica para adultos. Movimiento el\u00edptico de bajo impacto articular. Estructura de acero galvanizado con pintura electrost\u00e1tica. Para circuitos de fitness en par...","pn":302513,"pi":359991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20clasicas/P-1101-banca%20abdominales.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1102","no":"M\u00e1quina Ejercicio Bicicleta","sub":"Maquinas Ejercicio","de":"M\u00e1quina de ejercicio exterior tipo bicicleta estacionaria para adultos. Pedales y manubrio de acero inoxidable. Estructura de acero galvanizado. Ejercicio cardiovascular de bajo impacto. Para circu...","pn":287387,"pi":341991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20clasicas/P-1102-Cabalgata.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1103","no":"M\u00e1quina Ejercicio Remo","sub":"Maquinas Ejercicio","de":"M\u00e1quina de ejercicio exterior tipo remo para adultos. Simula el movimiento de remo con trabajo de tren superior y core. Estructura de acero galvanizado con pintura electrost\u00e1tica. Para circuitos de...","pn":446211,"pi":530991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20clasicas/P-1103-elongadora%20tren%20superior.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1104","no":"M\u00e1quina Ejercicio Stepper","sub":"Maquinas Ejercicio","de":"M\u00e1quina de ejercicio exterior tipo stepper o escalador para adultos. Movimiento alternado de pistoneo que trabaja tren inferior y cardio. Estructura de acero galvanizado. Para circuitos de fitness ...","pn":287387,"pi":341991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20clasicas/P-1104-Twister.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1105","no":"M\u00e1quina Ejercicio Prensa","sub":"Maquinas Ejercicio","de":"M\u00e1quina de ejercicio exterior tipo prensa de piernas para adultos. Trabaja cu\u00e1driceps, isquiotibiales y gl\u00fateos. Estructura de acero galvanizado con sistema de resistencia. Para circuitos de fitnes...","pn":340329,"pi":404991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20clasicas/P-1105-Fuerza%20multifuncional.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1106","no":"M\u00e1quina Ejercicio Surf","sub":"Maquinas Ejercicio","de":"M\u00e1quina de ejercicio exterior tipo tabla de surf o equilibrio activo. Movimiento multidireccional que trabaja core y equilibrio. Estructura de acero galvanizado. Para circuitos de fitness en parque...","pn":355455,"pi":422991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20clasicas/P-1106-Elongacion%20de%20cintura.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1107","no":"M\u00e1quina Ejercicio Esqu\u00ed","sub":"Maquinas Ejercicio","de":"M\u00e1quina de ejercicio exterior que simula el movimiento de esqu\u00ed de fondo. Movimiento pendular alternado de brazos y piernas. Estructura de acero galvanizado. Ejercicio cardiovascular de bajo impact...","pn":325203,"pi":386991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20clasicas/P-1107-Caminadora%20aerea.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1108","no":"M\u00e1quina Ejercicio Twister","sub":"Maquinas Ejercicio","de":"M\u00e1quina de ejercicio exterior tipo twister o rotaci\u00f3n de cadera. Plataforma giratoria que trabaja oblicuos y core. Estructura de acero galvanizado. Para circuitos de fitness en parques p\u00fablicos, pl...","pn":378144,"pi":449991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20clasicas/P-1108-Bogador.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1109","no":"M\u00e1quina Ejercicio P\u00e9ndulo","sub":"Maquinas Ejercicio","de":"M\u00e1quina de ejercicio exterior tipo p\u00e9ndulo para trabajo de brazos y tren superior. Movimiento pendular con resistencia regulable. Estructura de acero galvanizado. Para circuitos de fitness en parqu...","pn":453774,"pi":539991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20clasicas/P-1109-Bicicleta%20estatica.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1110","no":"M\u00e1quina Ejercicio Barras","sub":"Maquinas Ejercicio","de":"M\u00e1quina de ejercicio exterior con barras fijas a distintas alturas para dominadas y ejercicios de tren superior. Estructura de acero galvanizado con barras de acero inoxidable. Para circuitos de st...","pn":461337,"pi":548991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20clasicas/P-1110-flexion%20de%20piernas.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1111","no":"M\u00e1quina Ejercicio Combinada A","sub":"Maquinas Ejercicio","de":"M\u00e1quina de ejercicio exterior combinada tipo A que integra 2 funciones distintas. Estructura de acero galvanizado con pintura electrost\u00e1tica. Optimiza espacio en circuitos de fitness urbano. Para p...","pn":385707,"pi":458991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20clasicas/P-1111-%20caminadora%20simplewebp.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1112","no":"M\u00e1quina Ejercicio Combinada B","sub":"Maquinas Ejercicio","de":"M\u00e1quina de ejercicio exterior combinada tipo B que integra 2 funciones distintas. Estructura de acero galvanizado con pintura electrost\u00e1tica. Segunda variante de m\u00e1quina combinada para circuitos de...","pn":378144,"pi":449991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20clasicas/P-1112-eliptica.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1113","no":"M\u00e1quina Ejercicio Doble","sub":"Maquinas Ejercicio","de":"Estaci\u00f3n de ejercicio exterior doble para 2 usuarios simult\u00e1neos. Estructura de acero galvanizado que combina 2 equipos distintos. Para circuitos de fitness en parques p\u00fablicos y condominios.","pn":529404,"pi":629991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20clasicas/P-1113-%20caminadora%20aerea%20doble.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1114","no":"M\u00e1quina Ejercicio Triple","sub":"Maquinas Ejercicio","de":"Estaci\u00f3n de ejercicio exterior triple para 3 usuarios simult\u00e1neos. Estructura de acero galvanizado que combina 3 equipos distintos. Para circuitos de fitness en parques p\u00fablicos de mayor superficie.","pn":605034,"pi":719991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20clasicas/P-1114-%20eliptica%20doble.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1115","no":"M\u00e1quina Ejercicio Abdominal","sub":"Maquinas Ejercicio","de":"M\u00e1quina de ejercicio exterior para trabajo abdominal. Silla abdominal o banco de abdominales de acero galvanizado. Trabaja core y abdominales. Para circuitos de fitness en parques p\u00fablicos y condom...","pn":529404,"pi":629991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20clasicas/P-1115-%20hombros%20y%20espalda.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1116","no":"M\u00e1quina Ejercicio Espalda","sub":"Maquinas Ejercicio","de":"M\u00e1quina de ejercicio exterior para trabajo de espalda (extensiones lumbares). Estructura de acero galvanizado con sistema de resistencia. Trabaja columna y musculatura posterior. Para circuitos de ...","pn":453774,"pi":539991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20clasicas/P-1116-pectorales%20y%20brazos.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1117","no":"M\u00e1quina Ejercicio Piernas","sub":"Maquinas Ejercicio","de":"M\u00e1quina de ejercicio exterior para trabajo de piernas (extensiones o curl). Estructura de acero galvanizado con sistema de resistencia. Trabaja cu\u00e1driceps e isquiotibiales. Para circuitos de fitnes...","pn":287387,"pi":341991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20clasicas/P-1117-tim%C3%B3n.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1118","no":"M\u00e1quina Ejercicio Estaci\u00f3n","sub":"Maquinas Ejercicio","de":"Estaci\u00f3n de ejercicio completa tipo multipower exterior. M\u00faltiples funciones de musculaci\u00f3n en una sola estructura de acero galvanizado. Para circuitos de fitness de alto nivel en parques emblem\u00e1ti...","pn":1436967,"pi":1709991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20clasicas/P-1118-multiestacion.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1120","no":"M\u00e1quina Inclusiva Rueda Silla","sub":"Maquinas Inclusivas","de":"M\u00e1quina de ejercicio inclusiva adaptada para usuarios en silla de ruedas. Estructura de acero galvanizado con dise\u00f1o accesible. Permite el ejercicio de personas con movilidad reducida. Para parques...","pn":403355,"pi":479992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20inclusivas/P-1120-Brazos%20y%20hombrosjpg.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1121","no":"M\u00e1quina Inclusiva Brazos","sub":"Maquinas Inclusivas","de":"M\u00e1quina de ejercicio inclusiva para trabajo de brazos adaptada para diversas capacidades. Estructura de acero galvanizado con dise\u00f1o accesible. Para parques inclusivos y circuitos fitness para pers...","pn":336128,"pi":399992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20inclusivas/P-1121-bicicleta%20antebrazos.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1122","no":"M\u00e1quina Inclusiva B\u00e1sica","sub":"Maquinas Inclusivas","de":"M\u00e1quina de ejercicio inclusiva b\u00e1sica adaptada para diversas capacidades f\u00edsicas. Estructura de acero galvanizado de dise\u00f1o universal. Para proyectos de fitness inclusivo en parques p\u00fablicos y espa...","pn":262178,"pi":311992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20inclusivas/P-1122-Elongadora%20inclusiva.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1123","no":"M\u00e1quina Inclusiva Estaci\u00f3n","sub":"Maquinas Inclusivas","de":"Estaci\u00f3n de ejercicio inclusiva completa con m\u00faltiples funciones adaptadas. Estructura de acero galvanizado con dise\u00f1o universal. Para proyectos de gran escala de fitness inclusivo en parques p\u00fabli...","pn":537808,"pi":639992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20inclusivas/P-1123%20Hombros%20y%20brazos%20discapacitados.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1140","no":"Peso Variable Piernas","sub":"Peso Variable","de":"M\u00e1quina de ejercicio con peso variable para trabajo de piernas. Pesas ajustables de acero. Estructura de acero galvanizado con pintura electrost\u00e1tica. Permite ajustar la resistencia seg\u00fan capacidad...","pn":1512597,"pi":1799991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20peso%20variable/P-1140-brazos%20y%20espalda.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1141","no":"Peso Variable Pecho","sub":"Peso Variable","de":"M\u00e1quina de ejercicio con peso variable para trabajo de pectoral. Press de pecho con pesas ajustables. Estructura de acero galvanizado. Para circuitos de fitness con peso variable en parques p\u00fablico...","pn":1588228,"pi":1889991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20peso%20variable/P-1141-Sentadilla.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1142","no":"Peso Variable Espalda","sub":"Peso Variable","de":"M\u00e1quina de ejercicio con peso variable para trabajo de espalda. Jalones o remo con pesas ajustables. Estructura de acero galvanizado. Para circuitos de fitness con peso variable en parques y espaci...","pn":1815118,"pi":2159991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20peso%20variable/P-1142-%20dorsal.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1143","no":"Peso Variable Hombros","sub":"Peso Variable","de":"M\u00e1quina de ejercicio con peso variable para trabajo de hombros. Press de hombros con pesas ajustables. Estructura de acero galvanizado con pintura electrost\u00e1tica. Para circuitos de fitness premium ...","pn":1588228,"pi":1889991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20peso%20variable/P-1143-pectorales%20de%20pie.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1144","no":"Peso Variable B\u00edceps","sub":"Peso Variable","de":"M\u00e1quina de ejercicio con peso variable para trabajo de b\u00edceps. Curl de b\u00edceps con pesas ajustables. Estructura de acero galvanizado. Para circuitos de fitness con peso variable en parques y condomi...","pn":1588228,"pi":1889991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20peso%20variable/P-1144-%20pectorales%20sentado.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1145","no":"Peso Variable Tr\u00edceps","sub":"Peso Variable","de":"M\u00e1quina de ejercicio con peso variable para trabajo de tr\u00edceps. Extensiones de tr\u00edceps con pesas ajustables. Estructura de acero galvanizado con pintura electrost\u00e1tica. Para circuitos de fitness pr...","pn":1663858,"pi":1979991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20peso%20variable/P-1145-pull%20up.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1146","no":"Peso Variable Lat","sub":"Peso Variable","de":"M\u00e1quina de ejercicio con peso variable para trabajo de dorsales (lat pulldown). Jal\u00f3n al pecho con pesas ajustables. Estructura de acero galvanizado. Para circuitos de fitness con peso variable en ...","pn":1739488,"pi":2069991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20peso%20variable/P-1146-femoral%20sentado.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1147","no":"Peso Variable Remo","sub":"Peso Variable","de":"M\u00e1quina de ejercicio con peso variable para trabajo de remo. Remo sentado con pesas ajustables. Estructura de acero galvanizado. Para circuitos de fitness premium al aire libre en parques p\u00fablicos ...","pn":1739488,"pi":2069991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20peso%20variable/P-1147-%20pantorilla.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1148","no":"Peso Variable Abdomen","sub":"Peso Variable","de":"M\u00e1quina de ejercicio con peso variable para trabajo abdominal. Crunch abdominal con pesas ajustables. Estructura de acero galvanizado. Para circuitos de fitness premium con peso variable en parques...","pn":1890749,"pi":2249991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20peso%20variable/P-1148%20pectorales%20y%20brazos.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1149","no":"Peso Variable Gl\u00fateos","sub":"Peso Variable","de":"M\u00e1quina de ejercicio con peso variable para trabajo de gl\u00fateos. Extensiones de gl\u00fateos con pesas ajustables. Estructura de acero galvanizado con pintura electrost\u00e1tica. Para circuitos de fitness pr...","pn":1815118,"pi":2159991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20peso%20variable/P-1149%20banca%20abdominales.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1130","no":"Circuito Adulto Mayor A","sub":"Adulto Mayor","de":"M\u00e1quina de ejercicio de bajo impacto para circuito de adulto mayor A. Movimientos suaves adaptados a la tercera edad. Estructura de acero galvanizado. Mejora la movilidad, fuerza y calidad de vida....","pn":470582,"pi":559992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20adulto%20mayor/P-1130-%20Zig%20zag.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1131","no":"Circuito Adulto Mayor B","sub":"Adulto Mayor","de":"M\u00e1quina de ejercicio de bajo impacto para circuito de adulto mayor B. Ejercicios de equilibrio y coordinaci\u00f3n adaptados. Estructura de acero galvanizado. Para circuitos de actividad f\u00edsica para per...","pn":457136,"pi":543992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20adulto%20mayor/P-1131-La%20escalera.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1132","no":"Circuito Adulto Mayor C","sub":"Adulto Mayor","de":"M\u00e1quina de ejercicio de bajo impacto para circuito de adulto mayor C. Movimientos de flexibilidad y elongaci\u00f3n adaptados. Estructura de acero galvanizado. Para circuitos geri\u00e1tricos en parques p\u00fabl...","pn":524363,"pi":623992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20adulto%20mayor/P-1132-%20La%20montura.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1133","no":"Circuito Adulto Mayor D","sub":"Adulto Mayor","de":"M\u00e1quina de ejercicio de bajo impacto para circuito de adulto mayor D. Ejercicios cardiovasculares suaves adaptados a la tercera edad. Estructura de acero galvanizado. Para parques y plazas con equi...","pn":436968,"pi":519992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20adulto%20mayor/P-1133%20todos%20para%20abajo.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1134","no":"Circuito Adulto Mayor E","sub":"Adulto Mayor","de":"M\u00e1quina de ejercicio de bajo impacto para circuito de adulto mayor E. Ejercicios de fortalecimiento muscular adaptados. Estructura de acero galvanizado. Para circuitos de adulto mayor en parques p\u00fa...","pn":403355,"pi":479992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20adulto%20mayor/P-1134-%20taco%20y%20punta.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1135","no":"Circuito Adulto Mayor F","sub":"Adulto Mayor","de":"M\u00e1quina de ejercicio b\u00e1sica de bajo impacto para circuito de adulto mayor F. Movimientos simples de movilidad articular. Estructura de acero galvanizado. Para equipamiento b\u00e1sico de circuitos geri\u00e1...","pn":262178,"pi":311992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Maquinas%20de%20ejercicio/Maquinas%20de%20ejercicio%20adulto%20mayor/P-1135-%20el%20descanso.png","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1200","no":"Bicicletero Simple","sub":"Bicicleteros","de":"Bicicletero simple para 1-2 bicicletas. Estructura de acero galvanizado con pintura electrost\u00e1tica. Anclaje al suelo. Para ciclov\u00edas, estaciones de transporte y espacios p\u00fablicos con flujo ciclista.","pn":31925,"pi":37991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Bicicleteros/P-1200-bicicletero%20madrid.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1201","no":"Bicicletero B\u00e1sico","sub":"Bicicleteros","de":"Bicicletero b\u00e1sico de acero galvanizado de bajo costo para 1 bicicleta. Dise\u00f1o simple y funcional. Para equipamiento b\u00e1sico de comercios, edificios residenciales y espacios p\u00fablicos.","pn":28732,"pi":34191,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Bicicleteros/P-1201%20bicicletero%20moscu.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1202","no":"Bicicletero Doble","sub":"Bicicleteros","de":"Bicicletero doble para 2 bicicletas. Estructura de acero galvanizado con pintura electrost\u00e1tica. Anclaje al suelo. Para ciclov\u00edas, estaciones de transporte y espacios p\u00fablicos con mayor flujo cicli...","pn":175622,"pi":208991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Bicicleteros/P-1202%20bicicletero%20madrid%20150%20cm.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1203","no":"Bicicletero Triple","sub":"Bicicleteros","de":"Bicicletero triple para 3 bicicletas. Estructura de acero galvanizado con pintura electrost\u00e1tica. Anclaje al suelo. Para ciclov\u00edas, parques y espacios p\u00fablicos con alto flujo de ciclistas.","pn":175622,"pi":208991,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Bicicleteros/P-1203%20bicicletero%20murcia.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1204","no":"Bicicletero con Techo","sub":"Bicicleteros","de":"Bicicletero con techo protector para 4-6 bicicletas. Estructura de acero galvanizado con cubierta de policarbonato o zinc. Protege las bicicletas de la lluvia. Para estaciones de metro, comercios y...","pn":179614,"pi":213741,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Bicicleteros/P-1204%20Bicicletero%20circular%20180%20cm.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1205","no":"Bicicletero Grande","sub":"Bicicleteros","de":"Bicicletero grande para 8-10 bicicletas. Estructura de acero galvanizado con anclaje al suelo. Para ciclov\u00edas, estaciones de transporte p\u00fablico y grandes espacios p\u00fablicos con alto flujo ciclista.","pn":279404,"pi":332491,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Bicicleteros/P-1205%20bicicletero%20rectangular.webp","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1206","no":"Bicicletero Pared","sub":"Bicicleteros","de":"Bicicletero de pared de acero galvanizado para montaje en superficies verticales. Soluci\u00f3n compacta para espacios reducidos. Para estacionamientos cubiertos, bodegas y espacios interiores.","pn":35916,"pi":42741,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Bicicleteros/P-1206%20bicicletero%20ciruclar.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1207","no":"Bicicletero Piso","sub":"Bicicleteros","de":"Bicicletero de piso de acero galvanizado de dise\u00f1o horizontal o tipo rastillo. Permite estacionar m\u00faltiples bicicletas en fila. Para ciclov\u00edas, estaciones y espacios p\u00fablicos con restricci\u00f3n de alt...","pn":31126,"pi":37041,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Bicicleteros/P-1207%20bicicletero%20simple.jpg","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1450","no":"Juego Robinia Modular","sub":"Robinia","de":"Juego modular de madera de robinia con m\u00faltiples elementos l\u00fadicos. Madera impregnada al vac\u00edo con sales CCA para m\u00e1xima durabilidad exterior. Aspecto natural y c\u00e1lido. Para parques p\u00fablicos que bu...","pn":1882346,"pi":2239992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20robinia/P-1450%20Carrusel%20de%20robinia.avif","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1501","no":"Robinia Trepador Simple","sub":"Robinia","de":"Trepador simple de madera de robinia impregnada. Estructura natural de alta durabilidad sin mantenimiento. Para ni\u00f1os de 3 a 12 a\u00f1os. Dise\u00f1o que se integra armoniosamente con entornos naturales en ...","pn":605035,"pi":719992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20robinia/P-1501%20balancin%20simple%20robinia.avif","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1502","no":"Robinia Trepador Doble","sub":"Robinia","de":"Trepador doble de madera de robinia impregnada con 2 rutas de ascenso. Estructura natural de alta durabilidad. Para ni\u00f1os de 3 a 12 a\u00f1os. Para parques p\u00fablicos con enfoque de dise\u00f1o natural y suste...","pn":638649,"pi":759992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20robinia/P-1502%20balancin%20para%204%20personas%20de%20robinia.avif","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1503","no":"Robinia Modular Mediano","sub":"Robinia","de":"Juego modular mediano de madera de robinia con torre, tobog\u00e1n y escalera. Madera impregnada al vac\u00edo. Para 8-12 ni\u00f1os de 3 a 12 a\u00f1os. Para parques p\u00fablicos, colegios y proyectos de juego con materi...","pn":1344531,"pi":1599992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20robinia/P-1503%20Columpio%20doble%20robinia.avif","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1504","no":"Robinia Modular Grande","sub":"Robinia","de":"Juego modular grande de madera de robinia con m\u00faltiples torres y accesorios. Madera impregnada al vac\u00edo de alta durabilidad. Para 15+ ni\u00f1os de 3 a 14 a\u00f1os. Para parques p\u00fablicos de mayor escala con...","pn":1613439,"pi":1919992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20robinia/P-1504%20columpio%20triple%20robinia.avif","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1505","no":"Robinia Premium","sub":"Robinia","de":"Juego modular premium de madera de robinia con m\u00e1xima variedad de elementos. Madera impregnada al vac\u00edo. Para 20+ ni\u00f1os de 3 a 14 a\u00f1os. Para parques emblem\u00e1ticos y proyectos de alto presupuesto con...","pn":3361338,"pi":3999992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20robinia/P-1505%20juego%20modular%20robinia.avif","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1506","no":"Robinia XL","sub":"Robinia","de":"Juego modular XL de madera de robinia de gran envergadura. M\u00faltiples torres y variedad de accesorios. Madera impregnada al vac\u00edo de larga vida \u00fatil. Para 30+ ni\u00f1os. Para grandes parques p\u00fablicos co...","pn":4369741,"pi":5199992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20robinia/P-1506%20Juego%20de%20cuerdas%20robinia.avif","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1507","no":"Robinia con Tobog\u00e1n","sub":"Robinia","de":"Juego de madera de robinia con tobog\u00e1n integrado. Estructura de rollizo de robinia impregnado con escalera de acceso y tobog\u00e1n. Para ni\u00f1os de 3 a 12 a\u00f1os. Para parques y jardines que buscan un aspe...","pn":806716,"pi":959992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20robinia/P-1507%20Juego%20de%20equilibrio%20robinia.avif","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1508","no":"Robinia con Columpio","sub":"Robinia","de":"Juego de madera de robinia con columpio integrado. Estructura de rollizo de robinia impregnado con columpio de asiento est\u00e1ndar. Para ni\u00f1os de 3 a 12 a\u00f1os. Para parques y jardines con enfoque de di...","pn":1210077,"pi":1439992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20robinia/P-1508%20Barco%20de%20robinia.avif","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1509","no":"Robinia Completo","sub":"Robinia","de":"Juego completo de madera de robinia con todos los elementos: torre, tobog\u00e1n, escalera, columpio y accesorios. Rollizo de robinia impregnado al vac\u00edo. Para 15+ ni\u00f1os de 3 a 14 a\u00f1os. Para parques p\u00fab...","pn":2016800,"pi":2399992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20robinia/P-1509%20centro%20de%20reunion%20de%20robinia.avif","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"P-1510","no":"Robinia B\u00e1sico","sub":"Robinia","de":"Juego b\u00e1sico de madera de robinia con torre simple y tobog\u00e1n. Rollizo de robinia impregnado. Para 5-8 ni\u00f1os de 3 a 10 a\u00f1os. Opci\u00f3n de entrada de menor costo en juegos de madera natural para plazas ...","pn":739489,"pi":879992,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Juegos%20de%20robinia/P-1510%20Resorte%20avion%20de%20robinia.avif","cat":"juegos","em":"\ud83c\udfd7\ufe0f","nd":false},{"co":"PAS-10","no":"Pasto Sintetico 10mm","sub":"Ornamental","de":"Pasto sintetico 10mm pelo. Decoracion interiores, balcones y espacios pequenos. Bajo mantenimiento.","pn":2512,"pi":2990,"ins":6000,"im":"assets/img/gallery/Pasto-Sintetico-1.jpg","cat":"pasto","em":"\ud83c\udf3f","nd":true},{"co":"PAS-20","no":"Pasto Sintetico 20mm","sub":"Ornamental","de":"Pasto sintetico 20mm. Buena relacion precio-calidad para jardines residenciales.","pn":3353,"pi":3990,"ins":6000,"im":"assets/img/gallery/Pasto-Sintetico-2.jpg","cat":"pasto","em":"\ud83c\udf3f","nd":true},{"co":"PAS-30","no":"Pasto Sintetico 30mm","sub":"Ornamental","de":"Pasto sintetico 30mm. Alta durabilidad. Uso residencial e institucional.","pn":4193,"pi":4990,"ins":6000,"im":"assets/img/gallery/Pasto-Sintetico-3.jpg","cat":"pasto","em":"\ud83c\udf3f","nd":true},{"co":"PAS-40","no":"Pasto Sintetico 40mm","sub":"Ornamental","de":"Pasto sintetico 40mm. Mayor densidad y suavidad para uso frecuente.","pn":5874,"pi":6990,"ins":6000,"im":"assets/img/gallery/Pasto-Sintetico-4.jpg","cat":"pasto","em":"\ud83c\udf3f","nd":true},{"co":"PAS-40P","no":"Pasto Sintetico 40mm Premium","sub":"Premium","de":"Pasto Premium 40mm. Maxima calidad. Mayor resistencia UV y durabilidad.","pn":7555,"pi":8990,"ins":6000,"im":"assets/img/gallery/Pasto-Sintetico-5.jpg","cat":"pasto","em":"\ud83c\udf3f","nd":true},{"co":"PAS-DEP","no":"Pasto Deportivo FIFA 50mm","sub":"Deportivo","de":"Pasto deportivo 50mm certificacion FIFA. Canchas futbol y multicancha.","pn":6714,"pi":7990,"ins":6000,"im":"assets/img/gallery/Pasto-Sintetico-6.jpg","cat":"pasto","em":"\ud83c\udf3f","nd":true},{"co":"PAS-PAD","no":"Pasto Padel","sub":"Padel","de":"Pasto especializado canchas padel. Bote uniforme y traccion adecuada.","pn":0,"pi":0,"ins":6000,"im":"assets/img/gallery/Pasto-Sintetico-7.jpg","cat":"pasto","em":"\ud83c\udf3f","nd":true},{"co":"PAS-PEG","no":"Pegamento Adhesivo N60 tineta","sub":"Accesorio","de":"Pegamento adhesivo N60 tineta para union de pasto sintetico.","pn":80664,"pi":95990,"ins":0,"im":"assets/img/gallery/Pasto-Sintetico-8.jpg","cat":"pasto","em":"\ud83c\udf3f","nd":true},{"co":"PAS-CIN","no":"Cinta de Union por metro lineal","sub":"Accesorio","de":"Cinta de union para juntas de pasto. Precio por ml.","pn":420,"pi":500,"ins":0,"im":"assets/img/gallery/Pasto-Sintetico-10.jpg","cat":"pasto","em":"\ud83c\udf3f","nd":true},{"co":"PAS-MAN","no":"Manto Antimaleza por metro lineal","sub":"Accesorio","de":"Manto geotextil antimaleza bajo el pasto. Precio por ml.","pn":840,"pi":1000,"ins":0,"im":"assets/img/gallery/Pasto-Sintetico-10.jpg","cat":"pasto","em":"\ud83c\udf3f","nd":true},{"co":"CAU-1CM","no":"Caucho Continuo 1cm","sub":"1cm","de":"Solo capa de color EPDM","pn":39740,"pi":47290,"im":"assets/img/gallery/Caucho-Continuo-1.jpg","cat":"caucho","em":"\u26ab","nd":true},{"co":"CAU-2CM","no":"Caucho Continuo 2cm","sub":"2cm","de":"Base elastica 1cm + EPDM 1cm","pn":48647,"pi":57890,"im":"assets/img/gallery/Caucho-Continuo-2.jpg","cat":"caucho","em":"\u26ab","nd":true},{"co":"CAU-3CM","no":"Caucho Continuo 3cm","sub":"3cm","de":"Base elastica 2cm + EPDM 1cm","pn":54109,"pi":64390,"im":"assets/img/gallery/Caucho-Continuo-3.jpg","cat":"caucho","em":"\u26ab","nd":true},{"co":"CAU-4CM","no":"Caucho Continuo 4cm","sub":"4cm","de":"Base elastica 3cm + EPDM 1cm","pn":59319,"pi":70590,"im":"assets/img/gallery/Caucho-Continuo-4.jpg","cat":"caucho","em":"\u26ab","nd":true},{"co":"CAU-5CM","no":"Caucho Continuo 5cm","sub":"5cm","de":"Base elastica 4cm + EPDM 1cm","pn":63025,"pi":74990,"im":"assets/img/gallery/Caucho-Continuo-5.jpg","cat":"caucho","em":"\u26ab","nd":true},{"co":"CAU-6CM","no":"Caucho Continuo 6cm","sub":"6cm","de":"Base elastica 5cm + EPDM 1cm","pn":68563,"pi":81590,"im":"assets/img/gallery/Caucho-Continuo-6.jpg","cat":"caucho","em":"\u26ab","nd":true},{"co":"CAU-7CM","no":"Caucho Continuo 7cm","sub":"7cm","de":"Base elastica 6cm + EPDM 1cm","pn":74782,"pi":88990,"im":"assets/img/gallery/Caucho-Continuo-7.jpg","cat":"caucho","em":"\u26ab","nd":true},{"co":"CAU-8CM","no":"Caucho Continuo 8cm","sub":"8cm","de":"Base elastica 7cm + EPDM 1cm","pn":78143,"pi":92990,"im":"assets/img/gallery/Caucho-Continuo-8.jpg","cat":"caucho","em":"\u26ab","nd":true},{"co":"CAU-9CM","no":"Caucho Continuo 9cm","sub":"9cm","de":"Base elastica 8cm + EPDM 1cm","pn":82849,"pi":98590,"im":"assets/img/gallery/Caucho-Continuo-9.jpg","cat":"caucho","em":"\u26ab","nd":true},{"co":"CAU-10CM","no":"Caucho Continuo 10cm","sub":"10cm","de":"Base elastica 9cm + EPDM 1cm","pn":86546,"pi":102990,"im":"assets/img/gallery/Caucho-Continuo-9.jpg","cat":"caucho","em":"\u26ab","nd":true},{"co":"CAU-3ESP","no":"Caucho Continuo 3cm Especial","sub":"3cm","de":"Base elastica 1.5cm + EPDM 1.5cm","pn":65538,"pi":77990,"im":"assets/img/gallery/Caucho-Continuo-1.jpg","cat":"caucho","em":"\u26ab","nd":true},{"co":"CAU-4ESP","no":"Caucho Continuo 4cm Especial","sub":"4cm","de":"Base elastica 2.5cm + EPDM 1.5cm","pn":69748,"pi":82990,"im":"assets/img/gallery/Caucho-Continuo-2.jpg","cat":"caucho","em":"\u26ab","nd":true},{"co":"CAU-6ESP","no":"Caucho Continuo 6cm Especial","sub":"6cm","de":"Base elastica 4.5cm + EPDM 1.5cm","pn":80664,"pi":95990,"im":"assets/img/gallery/Caucho-Continuo-3.jpg","cat":"caucho","em":"\u26ab","nd":true},{"co":"CAU-TPV3","no":"Caucho Continuo TPV 3cm","sub":"3cm","de":"Capa de color TPV alta resistencia UV 3cm","pn":58000,"pi":68990,"im":"assets/img/menu/TPV.png","cat":"caucho","em":"\u26ab","nd":true},{"co":"CAU-TPV5","no":"Caucho Continuo TPV 5cm","sub":"5cm","de":"Base 4cm + TPV 1cm mayor resistencia UV","pn":72000,"pi":85680,"im":"assets/img/menu/TPV.png","cat":"caucho","em":"\u26ab","nd":true},{"co":"TOL-CONF","no":"Confeccion de Toldo HDPE 340grs","sub":"Confeccion","tipo_prod":"Confeccion","de":"Confeccion de toldo vela en tela HDPE 340grs. Bloquea hasta 95% de rayos UV. Alta durabilidad y resistencia a la intemperie. Disponible en multiples colores y formas (rectangular, triangular, cuadrado","pn":0,"pi":0,"tela":18990,"kit":0,"poste":0,"colores":"Beige, Crudo, Negro, Azul, Rojo, Amarillo, Verde","formas":"Rectangular, Triangular, Cuadrado","nota":"Solo confeccion de la tela. No incluye postes, anclajes ni instalacion. Para instalacion completa, agregar tambien el producto TOL-KIT.","im":"assets/img/gallery/Toldo-Vela-1.jpg","cat":"toldos","em":"\u26fa","nd":true},{"co":"TOL-KIT","no":"Kit de Instalacion Toldo (Tela + Accesorios + Instalacion)","sub":"Kit Instalacion","tipo_prod":"Kit Instalacion","de":"Kit completo que incluye confeccion de la tela HDPE 340grs + kit de anclaje por esquina (grilletes, tensores, cables acerados) + instalacion profesional. El cliente indica m2, cantidad de esquinas y r","pn":0,"pi":0,"tela":18990,"kit":60000,"poste":250000,"colores":"Beige, Crudo, Negro, Azul, Rojo, Amarillo, Verde","formas":"Rectangular, Triangular, Cuadrado","nota":"Kit de instalacion incluye: kit de anclaje por esquina (grilletes, tensores, cables acerados). Postes estandar: 5mm espesor, 6 pulgadas diametro. Altura minima poste: 2.5 metros. Altura maxima poste: 5 metros. Fundacion por poste: hormigon 1m3. La cantidad de postes equivale a la cantidad de esquina","im":"assets/img/menu/Toldo Vela Medida.png","cat":"toldos","em":"\u26fa","nd":true},{"co":"P-1300","no":"Aro de Salto Dual Canino","sub":"Circuito Canino","de":"Aro doble para salto. Acero galvanizado.","pn":0,"pi":0,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Circuito%20canino/P-1300%20aro%20de%20salto%20dual%20canino.webp","cat":"juegos","em":"\ud83d\udc15","nd":false},{"co":"P-1301","no":"Zig Zag Canino","sub":"Circuito Canino","de":"Obstaculo zig zag para agilidad y coordinacion canina.","pn":0,"pi":0,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Circuito%20canino/P-1301%20zig%20zag%20canino.webp","cat":"juegos","em":"\ud83d\udc15","nd":false},{"co":"P-1302","no":"Valla de Salto Bajo","sub":"Circuito Canino","de":"Valla baja para perros pequenos y medianos.","pn":0,"pi":0,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Circuito%20canino/P-1302%20valla%20de%20salto%20bajo.webp","cat":"juegos","em":"\ud83d\udc15","nd":false},{"co":"P-1303","no":"Valla de Salto Alto","sub":"Circuito Canino","de":"Valla alta para perros grandes.","pn":0,"pi":0,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Circuito%20canino/P-1303%20valla%20de%20salto%20alto.webp","cat":"juegos","em":"\ud83d\udc15","nd":false},{"co":"P-1304","no":"Aro de Salto","sub":"Circuito Canino","de":"Aro simple ajustable de acero galvanizado.","pn":0,"pi":0,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Circuito%20canino/P-1304%20aro%20de%20salto.webp","cat":"juegos","em":"\ud83d\udc15","nd":false},{"co":"P-1305","no":"Estacion de Descanso Canino","sub":"Circuito Canino","de":"Plataforma de descanso. Madera tratada exterior.","pn":0,"pi":0,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Circuito%20canino/P-1305%20estacion%20de%20descanso%20canino.webp","cat":"juegos","em":"\ud83d\udc15","nd":false},{"co":"P-1306","no":"Muro de Salto Canino","sub":"Circuito Canino","de":"Muro de escalada para perros. Acero galvanizado.","pn":0,"pi":0,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Circuito%20canino/P-1306%20muro%20de%20salto%20canino.webp","cat":"juegos","em":"\ud83d\udc15","nd":false},{"co":"P-1307","no":"Set de Equilibrio Canino","sub":"Circuito Canino","de":"Estimulacion sensorial y motora. Acero galvanizado.","pn":0,"pi":0,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Circuito%20canino/P-1307%20set%20de%20equilibrio%20canino.webp","cat":"juegos","em":"\ud83d\udc15","nd":false},{"co":"P-1308","no":"Estacion Descanso Individual","sub":"Circuito Canino","de":"Caseta individual para perros. Madera tratada.","pn":0,"pi":0,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Circuito%20canino/P-1308%20estacion%20de%20descanso%20individual%20canino.webp","cat":"juegos","em":"\ud83d\udc15","nd":false},{"co":"P-1309","no":"Salto Largo Canino","sub":"Circuito Canino","de":"Obstaculo de salto en longitud. Acero galvanizado.","pn":0,"pi":0,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Circuito%20canino/P-1309%20salto%20largo%20canino.webp","cat":"juegos","em":"\ud83d\udc15","nd":false},{"co":"P-1310","no":"Tunel Canino","sub":"Circuito Canino","de":"Tunel de paso. Polietileno resistente al exterior.","pn":0,"pi":0,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Circuito%20canino/P-1310%20tune%20canino.webp","cat":"juegos","em":"\ud83d\udc15","nd":false},{"co":"P-1311","no":"Balancin Canino","sub":"Circuito Canino","de":"Balancin de madera. Estimula equilibrio y confianza.","pn":0,"pi":0,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Circuito%20canino/P-1311%20balancin%20canino.jpg","cat":"juegos","em":"\ud83d\udc15","nd":false},{"co":"P-1312","no":"Pasarela M Canino","sub":"Circuito Canino","de":"Pasarela mediana con rampas antideslizantes.","pn":0,"pi":0,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Circuito%20canino/P-1312%20pasarela%20M%20canino.webp","cat":"juegos","em":"\ud83d\udc15","nd":false},{"co":"P-1313","no":"Pasarela L Canino","sub":"Circuito Canino","de":"Pasarela larga para circuito completo.","pn":0,"pi":0,"im":"Catalogo-Juegos/Pagina%20Juegos%20Planella/Mobiliario%20urbano/Circuito%20canino/P-1313%20pasarela%20L%20canino.webp","cat":"juegos","em":"\ud83d\udc15","nd":false}]</textarea>
+
+<!-- FILE PICKER — shown when Excel can't be loaded via XHR (local file) -->
+<div id="fp-box" style="display:none;margin:24px clamp(12px,4vw,40px);background:#fff;border:2px solid var(--gr);border-radius:var(--r);padding:32px;text-align:center;box-shadow:var(--sh)">
+  <div style="font-size:48px;margin-bottom:12px">📊</div>
+  <div style="font-family:var(--f-head);font-size:18px;font-weight:800;color:var(--dk);margin-bottom:8px">Selecciona el archivo Excel</div>
+  <div style="font-size:13px;color:var(--md);margin-bottom:24px;line-height:1.6">
+    Para ver el catálogo necesitas seleccionar <strong>Catalogo_MAMKAM.xlsx</strong>.<br>
+    <span style="color:var(--gr);font-weight:600">En el servidor esto es automático.</span> Al abrir localmente debes seleccionarlo manualmente.
+  </div>
+  <label style="display:inline-flex;align-items:center;gap:8px;background:var(--gr);color:#fff;padding:12px 28px;border-radius:30px;cursor:pointer;font-family:var(--f-body);font-size:14px;font-weight:700;transition:all var(--tr)">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+    Seleccionar Catalogo_MAMKAM.xlsx
+    <input type="file" accept=".xlsx,.xls" onchange="handleFilePick(event)" style="display:none">
+  </label>
+  <div id="fp-lbl" style="margin-top:14px;font-size:12px;color:var(--md);min-height:18px"></div>
+  <div style="margin-top:20px;font-size:11px;color:var(--md);background:var(--lt);border-radius:8px;padding:10px 14px;line-height:1.6">
+    💡 <strong>En producción (mamkam.cl):</strong> sube <code>Catalogo_MAMKAM.xlsx</code> a la raíz del sitio junto a <code>Catalogo.html</code> y cargará automáticamente.
+  </div>
+</div>
+
+<div class="err-box" id="errbox">
+  <div class="err-title">⚠️ No se pudo cargar el catálogo</div>
+  <div class="err-txt" id="errtxt">No se encontró el archivo Excel del catálogo. Asegúrate de que <strong>Catalogo_MAMKAM.xlsx</strong> esté en la raíz del sitio.</div>
+</div>
+
+<!-- CATALOG VIEW -->
+<div class="view active" id="v-cat">
+  <section class="hero">
+    <div class="hi">
+      <div class="hbdg">Catálogo de Productos 2026</div>
+      <h1>MAMKAM<br><em>Catálogo de Productos</em></h1>
+      <p>Equipamiento de plazas, mobiliario urbano, toldos, áreas verdes y pisos de caucho para Chile.</p>
+      <div class="sts">
+        <div class="st"><div class="stn" id="hero-cnt">—</div><div class="stl">Productos</div></div>
+        <div class="st"><div class="stn" id="hero-cats">4</div><div class="stl">Categorías</div></div>
+        <div class="st"><div class="stn">2026</div><div class="stl">Actualizado</div></div>
+      </div>
+    </div>
+  </section>
+  <div class="ctabs" id="ctabs"></div>
+  <div class="scbar" id="scbar" style="display:none"></div>
+  <div class="tlbr" id="tlbr">
+    <div class="rc">Mostrando <strong id="sc">0</strong> productos</div>
+    <div class="vtg">
+      <button class="vb on" id="gvb" title="Grilla"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></button>
+      <button class="vb" id="lvb" title="Lista"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/></svg></button>
+    </div>
+  </div>
+  <div id="grid"></div>
+  <div class="svcg" id="svcg" style="display:none"></div>
+</div>
+
+<!-- CART VIEW -->
+<div class="view" id="v-cart">
+  <div class="cv">
+    <div class="cvh">
+      <div><div class="cvht">🛒 Mi Proyecto</div><div class="cvhs">Productos para cotizar</div></div>
+      <button class="btn bg" id="back-btn">← Seguir agregando</button>
+    </div>
+    <div class="cvba">
+      <div>
+        <div class="cits" id="cits"></div>
+        <div class="cemp" id="cemp" style="display:none">
+          <div style="font-size:56px;opacity:.3;margin-bottom:14px">🛒</div>
+          <h3 style="font-family:var(--f-head);font-size:18px;font-weight:700;margin-bottom:8px">Tu proyecto está vacío</h3>
+          <p style="font-size:13px">Agrega productos desde el catálogo para cotizar.</p>
+          <button class="btn bhome" style="margin-top:16px" id="go-cat-btn">Ver Catálogo</button>
+        </div>
+      </div>
+      <div class="csd">
+        <div class="csm">
+          <div class="csmt">Resumen</div>
+          <div class="sr"><span>Con valor</span><span id="s-rdy">$0</span></div>
+          <div class="sr"><span>Pendientes</span><span id="s-pnd" style="color:var(--or)">0 items</span></div>
+          <div class="sr srt"><span>Total referencial</span><span id="s-tot">$0</span></div>
+          <div class="snot" id="s-note">⚠️ Completa los ítems pendientes para el total exacto.</div>
+        </div>
+        <div class="cf">
+          <div class="cft">👤 Tus datos</div>
+          <div class="fg"><label class="fl">Nombre *</label><input type="text" class="fi" id="cl-nom" placeholder="Tu nombre" autocomplete="name"></div>
+          <div class="fg"><label class="fl">Email *</label><input type="email" class="fi" id="cl-eml" placeholder="tu@email.com" autocomplete="email"></div>
+          <div class="fg"><label class="fl">Teléfono</label><input type="tel" class="fi" id="cl-tel" placeholder="+56 9 ..." autocomplete="tel"></div>
+          <div class="fg"><label class="fl">Empresa / Municipalidad</label><input type="text" class="fi" id="cl-emp" placeholder="Nombre organización"></div>
+          <div class="fg"><label class="fl">Comentarios</label><textarea class="fi" id="cl-not" rows="3" placeholder="Ubicación del proyecto, plazo, etc."></textarea></div>
+          <button class="sbtn" id="send-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Enviar Cotización
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="dovl" id="dovl">
+  <div class="dmdl">
+    <div class="dh">
+      <div><div style="font-size:9px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--md);margin-bottom:6px" id="d-cod"></div><span class="dtag" id="d-tag">Producto</span></div>
+      <button class="dcls" id="d-cls"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="dbd">
+      <div class="dimgcol" id="d-imgcol"><img class="dimg" id="d-img" src="" alt=""></div>
+      <div class="dinf">
+        <div class="dco" id="d-co"></div>
+        <div class="dna" id="d-na"></div>
+        <div class="dacc"></div>
+        <div class="dde" id="d-de"></div>
+        <div class="dpbx" id="d-pbx"></div>
+      </div>
+    </div>
+    <div class="df">
+      <button class="btn bwa" id="d-wa">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.5 0C5.149 0 0 5.149 0 11.5S5.149 23 11.5 23 23 17.851 23 11.5 17.851 0 11.5 0zm0 21C6.252 21 2 16.748 2 11.5S6.252 2 11.5 2 21 6.252 21 11.5 16.748 21 11.5 21z"/></svg>
+        Consultar WhatsApp
+      </button>
+      <button class="btn bhome" id="d-add">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        Agregar a Proyecto
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- CALC -->
+<div class="clov" id="clov">
+  <div class="clm">
+    <div class="clh"><div class="clht">🧮 Calcular Valor Referencial</div><div class="clhs" id="cl-pnm">Producto</div></div>
+    <div class="clbody" id="cl-body"></div>
+    <div class="clf">
+      <button class="btn bg" id="cl-cancel">Cancelar</button>
+      <button class="btn" style="background:var(--or);color:#fff" id="cl-ok">Calcular</button>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div class="sucov" id="sucov">
+  <div class="succ">
+    <span class="suci">🎉</span>
+    <div class="suct">¡Cotización Enviada!</div>
+    <div class="suctx" id="suc-tx">Tu solicitud fue enviada correctamente.</div>
+    <button class="btn bhome" id="suc-btn" style="margin:0 auto">Volver al Catálogo</button>
+  </div>
+</div>
+
+<button id="stb"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button>
+<div class="tst" id="tst"></div>
+
+<script>
+
+
+
+// ── CONFIG ──────────────────────────────────────────────────────────
+var EXCEL_FILE = 'Catalogo_MAMKAM.xlsx';
+var WA_NUMBER  = '56948182630';
+
+// State
+var ALL = [], cart = [], mp = null, calcIdx = -1;
+var aCat = 'juegos', aSub = 'Todos', sq = '';
+
+// ── LOAD EXCEL ───────────────────────────────────────────────────────
+function loadExcel() {
+  var req = new XMLHttpRequest();
+  req.open('GET', EXCEL_FILE + '?v=' + Date.now(), true);
+  req.responseType = 'arraybuffer';
+  req.onload = function() {
+    if (req.status === 200) {
+      try {
+        var data = new Uint8Array(req.response);
+        var wb = XLSX.read(data, {type: 'array', cellDates: true});
+        parseWorkbook(wb);
+        hideLoading();
+        initUI();
+      } catch(e) {
+        showError('Error al leer el Excel: ' + e.message);
+      }
+    } else {
+      showFilePickerFallback();
+    }
+  };
+  req.onerror = function() {
+    showFilePickerFallback();
+  };
+  req.send();
+}
+
+function parseWorkbook(wb) {
+  ALL = [];
+
+  // SHEET: Juegos
+  parseSheet(wb, 'JUEGOS', function(row) {
+    if (!row.Codigo || row.Activo === 'NO') return null;
+    return {
+      co: String(row.Codigo),
+      no: String(row.Nombre || ''),
+      sub: String(row.Subcategoria || ''),
+      de: String(row.Descripcion || ''),
+      pn: num(row.Precio_Neto),
+      pi: num(row.Precio_IVA),
+      ins: num(row.Precio_Instalacion),
+      im: String(row.Imagen || ''),
+      cat: 'juegos',
+      em: '🏗️'
+    };
+  });
+
+  // SHEET: Pasto
+  parseSheet(wb, 'PASTO_SINTETICO', function(row) {
+    if (!row.Codigo || row.Activo === 'NO') return null;
+    return {
+      co: String(row.Codigo),
+      no: String(row.Nombre || ''),
+      sub: String(row.Tipo || ''),
+      de: String(row.Descripcion || ''),
+      pn: num(row.Precio_m2_Neto),
+      pi: num(row.Precio_m2_IVA),
+      ins: num(row.Precio_Instalacion_m2),
+      im: String(row.Imagen || ''),
+      cat: 'pasto',
+      em: '🌿',
+      nd: true
+    };
+  });
+
+  // SHEET: Caucho
+  parseSheet(wb, 'CAUCHO_CONTINUO', function(row) {
+    if (!row.Codigo || row.Activo === 'NO') return null;
+    return {
+      co: String(row.Codigo),
+      no: String(row.Nombre || ''),
+      sub: String(row.Espesor_cm ? row.Espesor_cm + 'cm' : ''),
+      de: String(row.Descripcion || ''),
+      pn: num(row.Precio_m2_Neto),
+      pi: num(row.Precio_m2_IVA),
+      ins: 0,
+      im: String(row.Imagen || ''),
+      cat: 'caucho',
+      em: '⚫',
+      nd: true
+    };
+  });
+
+  // SHEET: Toldos
+  parseSheet(wb, 'TOLDOS', function(row) {
+    if (!row.Codigo || row.Activo === 'NO') return null;
+    return {
+      co:        String(row.Codigo),
+      no:        String(row.Nombre || ''),
+      sub:       String(row.Tipo_Producto || ''),
+      tipo_prod: String(row.Tipo_Producto || ''),
+      de:        String(row.Descripcion || ''),
+      pn: 0, pi: 0, ins: 0,
+      im:        String(row.Imagen || ''),
+      cat: 'toldos', em: '⛺', nd: true,
+      tela:   num(row.Precio_m2_Tela)          || 18990,
+      kit:    num(row.Precio_Kit_Esquina)       || 0,
+      poste:  num(row.Precio_Poste_Fundacion)   || 0,
+      colores: String(row.Colores_Disponibles || 'Beige, Crudo, Negro, Azul, Rojo, Amarillo, Verde'),
+      formas:  String(row.Formas_Disponibles  || 'Rectangular, Triangular, Cuadrado'),
+      nota:    String(row.Nota_Instalacion    || '')
+    };
+  });
+
+  // SHEET: Circuito Canino — merged into cat=juegos with sub='Circuito Canino'
+  parseSheet(wb, 'CIRCUITO_CANINO', function(row) {
+    if (!row.Codigo || row.Activo === 'NO') return null;
+    return {
+      co: String(row.Codigo),
+      no: String(row.Nombre || ''),
+      sub: 'Circuito Canino',
+      de: String(row.Descripcion || ''),
+      pn: num(row.Precio_Neto),
+      pi: num(row.Precio_IVA),
+      ins: 0,
+      im: String(row.Imagen || ''),
+      cat: 'juegos',
+      em: '🐕'
+    };
+  });
+
+  document.getElementById('hero-cnt').textContent = ALL.length;
+  buildSubsFromData();
+}
+
+function parseSheet(wb, sheetName, mapper) {
+  if (!wb.SheetNames.includes(sheetName)) return;
+  var ws = wb.Sheets[sheetName];
+  var rows = XLSX.utils.sheet_to_json(ws, {defval: ''});
+  rows.forEach(function(row) {
+    var p = mapper(row);
+    if (p) ALL.push(p);
+  });
+}
+
+function num(v) {
+  var n = parseFloat(String(v).replace(/[^0-9.-]/g,''));
+  return isNaN(n) ? 0 : n;
+}
+
+// ── UI ────────────────────────────────────────────────────────────────
+function clp(n) { return '$' + Math.round(n).toLocaleString('es-CL'); }
+
+var CAT_DEFS = [
+  {k:'juegos', l:'Equipamiento de Plaza', e:'🏗️', color:'#1565c0'},
+  {k:'pasto',  l:'Pasto Sintetico',       e:'🌿', color:'#1a6b3c'},
+  {k:'caucho', l:'Caucho Continuo',        e:'⚫', color:'#333333'},
+  {k:'toldos', l:'Toldos Vela',            e:'⛺', color:'#0d5a52'},
+];
+
+var SVC_CATS = []; // All categories use the same card grid with images
+
+// Subcategory filters for Juegos
+// Dynamic subcategories — built from Excel data after load
+var SUBS = ['Todos'];
+// SM matches by the 'sub' field (Subcategoria column from Excel)
+// Built dynamically in buildSubsFromData()
+function buildSubsFromData() {
+  var seen = {};
+  ALL.forEach(function(p) {
+    if ((p.cat === 'juegos' || p.cat === 'canino') && p.sub && !seen[p.sub]) {
+      seen[p.sub] = true;
+    }
+  });
+  // Fixed display order matching how a client would browse
+  var ORDER = [
+    'Balancines','Columpios','Toboganes','Trepadores','Resortes','Carruseles',
+    'Inclusivos','Dinamicos','Juegos Musicales','Juegos Modulares','Robinia',
+    'Street Fitness','Maquinas Ejercicio','Maquinas Inclusivas','Peso Variable','Adulto Mayor',
+    'Bancas','Escanos','Mesas','Basureros','Bicicleteros',
+    'Circuito Canino'
+  ];
+  SUBS = ['Todos'];
+  ORDER.forEach(function(s) { if (seen[s]) SUBS.push(s); });
+  // Any remaining not in ORDER
+  Object.keys(seen).forEach(function(s) { if (SUBS.indexOf(s) === -1) SUBS.push(s); });
+}
+
+function initUI() {
+  buildTabs();
+  buildScBar();
+  rCat();
+  bindEvents();
+}
+
+function buildTabs() {
+  var tb = document.getElementById('ctabs');
+  tb.innerHTML = '';
+  CAT_DEFS.forEach(function(c) {
+    var cnt = ALL.filter(function(p){return p.cat===c.k;}).length;
+    if (!cnt) return;
+    var b = document.createElement('button');
+    b.className = 'ctab' + (c.k === aCat ? ' on' : '');
+    b.dataset.k = c.k;
+    b.innerHTML = c.e + ' ' + c.l + '<span class="ctcn">' + cnt + '</span>';
+    b.addEventListener('click', function() {
+      aCat = c.k; aSub = 'Todos'; sq = '';
+      var si = document.getElementById('si');
+      if (si) si.value = '';
+      document.querySelectorAll('.ctab').forEach(function(x){x.classList.toggle('on',x.dataset.k===c.k);});
+      rCat();
+    });
+    tb.appendChild(b);
+  });
+  document.getElementById('hero-cats').textContent = tb.children.length;
+}
+
+function buildScBar() {
+  var sb = document.getElementById('scbar');
+  sb.innerHTML = '';
+  SUBS.forEach(function(s) {
+    var b = document.createElement('button');
+    b.className = 'sctg' + (s === aSub ? ' on' : '');
+    b.textContent = s;
+    b.addEventListener('click', function() {
+      aSub = s;
+      document.querySelectorAll('.sctg').forEach(function(x){x.classList.toggle('on',x.textContent===s);});
+      rGrid();
+    });
+    sb.appendChild(b);
+  });
+}
+
+function rCat() {
+  var g = document.getElementById('grid');
+  var sg = document.getElementById('svcg');
+  var sb = document.getElementById('scbar');
+  var tl = document.getElementById('tlbr');
+  g.style.display = 'grid'; sg.style.display = 'none';
+  sb.style.display = aCat === 'juegos' ? 'flex' : 'none';
+  tl.style.display = 'flex';
+  rGrid();
+}
+
+function rGrid() {
+  var g = document.getElementById('grid');
+  var q = (sq || '').toLowerCase().trim();
+  var fi = ALL.filter(function(p) {
+    if (p.cat !== aCat) return false;
+    if (q) return p.no.toLowerCase().indexOf(q) >= 0 || p.co.toLowerCase().indexOf(q) >= 0 || (p.de && p.de.toLowerCase().indexOf(q) >= 0);
+    if (aSub !== 'Todos') {
+      return p.sub === aSub;
+    }
+    return true;
+  });
+  document.getElementById('sc').textContent = fi.length;
+  if (!fi.length) { g.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--md);font-size:14px">Sin resultados para tu búsqueda.</div>'; return; }
+
+  var catDef = CAT_DEFS.filter(function(c){return c.k===aCat;})[0] || {e:'📦',color:'#37474f'};
+  var h = '';
+  for (var i = 0; i < fi.length; i++) {
+    var p = fi[i];
+    var d = Math.min(i * 0.02, 0.25).toFixed(2);
+    var showPrc = p.pi > 0;
+    h += '<div class="card" data-i="' + i + '" style="animation-delay:' + d + 's">';
+    h += '<div class="ciw" style="background:' + catDef.color + '18">';
+    if (showPrc) h += '<span class="cprc">' + clp(p.pi) + (p.nd ? '/m²':'') + '</span>';
+    h += '<img class="ci" data-idx="' + i + '" alt="' + p.no.replace(/"/g,'') + '">';
+    h += '<div class="cph"><span>' + catDef.e + '</span><small>Sin imagen</small></div></div>';
+    h += '<div class="cbody"><div class="cco">' + p.co + '</div><div class="cna">' + p.no + '</div>';
+    h += '<div class="cde">' + (p.de || '') + '</div></div>';
+    h += '<div class="cacts">';
+    h += '<button class="cadd" data-i="' + i + '"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg> Agregar</button>';
+    h += '<button class="cver" data-i="' + i + '"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> Ver</button>';
+    h += '</div></div>';
+  }
+  g.innerHTML = h;
+
+  // Set img srcs
+  g.querySelectorAll('img.ci[data-idx]').forEach(function(img) {
+    var p2 = fi[parseInt(img.dataset.idx)];
+    if (p2 && p2.im) {
+      img.src = p2.im;
+      img.onerror = function() { this.style.display = 'none'; this.parentNode.querySelector('.cph').style.display = 'flex'; };
+    } else {
+      img.style.display = 'none';
+      img.parentNode.querySelector('.cph').style.display = 'flex';
+    }
+  });
+
+  // Events
+  g.querySelectorAll('.card').forEach(function(card, k) {
+    var p = fi[k];
+    card.querySelector('.cver').addEventListener('click', function(e) { e.stopPropagation(); oModal(p); });
+    card.querySelector('.cadd').addEventListener('click', function(e) { e.stopPropagation(); addC(p); });
+    card.addEventListener('click', function() { oModal(p); });
+  });
+}
+
+function rSvc() {
+  var sg = document.getElementById('svcg');
+  var prods = ALL.filter(function(p) { return p.cat === aCat; });
+  if (!prods.length) { sg.innerHTML = ''; return; }
+  var catDef = CAT_DEFS.filter(function(c){return c.k===aCat;})[0] || {e:'📦',color:'#37474f'};
+  var h = '';
+  prods.forEach(function(p, i) {
+    var hasPrc = p.pi > 0;
+    h += '<div class="svcc" data-i="' + i + '">';
+    h += '<div class="svct"><span class="svcem">' + catDef.e + '</span>';
+    h += '<div><div class="svctxt">' + p.no + '</div>';
+    h += '<div class="svcsub">' + p.co + (hasPrc ? ' · ' + clp(p.pi) + '/m²' : ' · A cotizar') + '</div></div></div>';
+    h += '<div class="svcb"><div class="svcd">' + (p.de || '') + '</div>';
+    h += '<button class="svca" style="background:' + catDef.color + '" data-i="' + i + '">';
+    h += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>';
+    h += ' Agregar a Proyecto</button></div></div>';
+  });
+  sg.innerHTML = h;
+  sg.querySelectorAll('.svca').forEach(function(b) {
+    b.addEventListener('click', function(e) { e.stopPropagation(); addC(prods[parseInt(b.dataset.i)]); });
+  });
+  sg.querySelectorAll('.svcc').forEach(function(card, i) {
+    card.addEventListener('click', function(e) { if (e.target.tagName !== 'BUTTON') oModal(prods[i]); });
+  });
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────
+function oModal(p) {
+  mp = p;
+  var catDef = CAT_DEFS.filter(function(c){return c.k===p.cat;})[0]||{e:'📦',color:'#1a6b3c',l:'Producto'};
+  document.getElementById('d-cod').textContent = p.co;
+  document.getElementById('d-tag').textContent = catDef.e + ' ' + catDef.l;
+  document.getElementById('d-tag').style.background = catDef.color;
+  document.getElementById('d-co').textContent = p.co;
+  document.getElementById('d-na').textContent = p.no;
+  document.getElementById('d-de').textContent = p.de || 'Equipamiento de alta calidad para espacios exteriores.';
+  document.getElementById('d-imgcol').style.background = catDef.color + '18';
+  var img = document.getElementById('d-img');
+  if (p.im) { img.src = p.im; img.style.display = 'block'; img.onerror = function(){this.style.display='none';}; }
+  else { img.style.display = 'none'; }
+  var pHtml = '';
+  if (p.pi > 0) {
+    pHtml += '<div class="dpi"><div class="dpil">Neto</div><div class="dpiv" style="color:'+catDef.color+'">' + clp(p.pn||p.pi) + '</div></div>';
+    pHtml += '<div class="dpi"><div class="dpil">c/IVA' + (p.nd?'/m²':'') + '</div><div class="dpiv" style="color:'+catDef.color+'">' + clp(p.pi) + '</div></div>';
+    if (p.ins > 0) pHtml += '<div class="dpi"><div class="dpil">Instalación/m²</div><div class="dpiv" style="color:'+catDef.color+'">' + clp(p.ins) + '</div></div>';
+  } else {
+    pHtml = '<div class="dpi" style="flex:2"><div class="dpil">Precio</div><div class="dpiv" style="color:'+catDef.color+'">A cotizar</div></div>';
+  }
+  document.getElementById('d-pbx').innerHTML = pHtml;
+  document.getElementById('dovl').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function cModal() { document.getElementById('dovl').classList.remove('open'); document.body.style.overflow = ''; mp = null; }
+
+// ── CART ──────────────────────────────────────────────────────────────
+function addC(p) {
+  for (var i = 0; i < cart.length; i++) { if (cart[i].co === p.co) { toast('Ya está en tu proyecto'); return; } }
+  cart.push({
+    co:p.co, no:p.no, im:p.im||'', cat:p.cat, em:p.em||'📦',
+    pi:p.pi, pn:p.pn||p.pi, ins:p.ins||0,
+    vc: p.nd ? null : p.pi, nd: !!p.nd,
+    sub:       p.sub       || '',
+    tipo_prod: p.tipo_prod || '',
+    tela:      p.tela   || 18990,
+    kit:       p.kit    || 0,
+    poste:     p.poste  || 0,
+    colores:   p.colores || 'Beige, Crudo, Negro, Azul, Rojo, Amarillo, Verde',
+    formas:    p.formas  || 'Rectangular, Triangular, Cuadrado',
+    nota:      p.nota    || ''
+  });
+  uBadge(); toast('✓ ' + p.no.substring(0,28) + ' agregado');
+}
+function uBadge() {
+  var n = cart.length;
+  var b = document.getElementById('cb'); b.textContent = n; b.classList.toggle('show', n > 0);
+}
+function rmC(i) { cart.splice(i, 1); uBadge(); rCart(); }
+
+function shCart() { document.getElementById('v-cat').classList.remove('active'); document.getElementById('v-cart').classList.add('active'); rCart(); window.scrollTo(0,0); }
+function shCat()  { document.getElementById('v-cart').classList.remove('active'); document.getElementById('v-cat').classList.add('active'); window.scrollTo(0,0); }
+
+</script>
+<script>
+
+function rCart() {
+  var ci = document.getElementById('cits'), ce = document.getElementById('cemp');
+  if (!cart.length) { ci.innerHTML = ''; ce.style.display = 'block'; uSum(); return; }
+  ce.style.display = 'none';
+  var h = '';
+  cart.forEach(function(item, i) {
+    h += '<div class="cit">';
+    if (item.im) h += '<img class="citim" data-isrc="' + i + '" alt="">';
+    else h += '<div class="citim sv">' + (item.em||'📦') + '</div>';
+    h += '<div class="citf"><div class="citn">' + item.no + '</div><div class="citco">' + item.co + '</div>';
+    if (item.nd) {
+      h += '<span class="sbp sbpnd">⏳ Pendiente de valor</span><div class="citpr nd">Requiere especificaciones</div>';
+      h += '<button class="cbtn" data-ci="' + i + '">🧮 Calcular Valor</button>';
+    } else {
+      h += '<span class="sbp sbrdy">✓ Valor disponible</span><div class="citpr">' + clp(item.vc) + (item.nd?'/m²':'') + '</div>';
+    }
+    h += '</div><button class="crm" data-ri="' + i + '" title="Quitar"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6 18 20H6L5 6"/></svg></button></div>';
+  });
+  ci.innerHTML = h;
+  ci.querySelectorAll('.citim[data-isrc]').forEach(function(img){var i=parseInt(img.dataset.isrc);if(cart[i]&&cart[i].im){img.src=cart[i].im;img.onerror=function(){this.style.display='none';};}});
+  ci.querySelectorAll('.crm').forEach(function(b){b.addEventListener('click',function(){rmC(parseInt(b.dataset.ri));});});
+  ci.querySelectorAll('.cbtn').forEach(function(b){b.addEventListener('click',function(){oCalc(parseInt(b.dataset.ci));});});
+  uSum();
+}
+
+function uSum() {
+  var r = 0, p = 0;
+  cart.forEach(function(it){if(it.nd)p++;else r+=(it.vc||0);});
+  document.getElementById('s-rdy').textContent = clp(r);
+  document.getElementById('s-pnd').textContent = p + ' item' + (p===1?'':'s');
+  document.getElementById('s-tot').textContent = clp(r);
+  document.getElementById('s-note').style.display = p > 0 ? 'block' : 'none';
+}
+
+// ── CALC ─────────────────────────────────────────────────────────────
+function oCalc(i) {
+  calcIdx = i;
+  var item = cart[i];
+  var subtipo = item.tipo_prod ? ' · ' + item.tipo_prod : '';
+  document.getElementById('cl-pnm').textContent = item.no + subtipo;
+  var qs = gQs(item);
+  var h = '';
+  qs.forEach(function(q){
+    h += '<div class="cq"><label class="cql">' + q.l + (q.u?' ('+q.u+')':'') + '</label>'+(q.hint?'<div style="font-size:11px;color:var(--md);margin-bottom:6px;line-height:1.4">💡 '+q.hint+'</div>':'');
+    if (q.t === '__info__') {
+      h += '<div style="font-size:11px;color:var(--md);background:var(--orl);border-radius:8px;padding:10px 12px;line-height:1.6;border-left:3px solid var(--or)">'+q.txt+'</div>';
+    } else if (q.t === 'textarea') {
+      h += '<textarea class="cqi" id="qq-'+q.id+'" rows="3" placeholder="'+(q.p||'')+'" style="resize:vertical;min-height:70px"></textarea>';
+    } else if (q.t === 'sel') {
+      h += '<select class="cqi" id="qq-'+q.id+'"><option value="">Seleccionar...</option>';
+      q.o.forEach(function(o){h+='<option>'+o+'</option>';});
+      h += '</select>';
+    } else {
+      h += '<input class="cqi" type="'+q.t+'" id="qq-'+q.id+'" placeholder="'+(q.p||'')+'">';
+    }
+    h += '</div>';
+  });
+  h += '<div class="cres" id="cres"><div class="crt">Valor Referencial Estimado</div><div class="crv" id="crv"></div><div class="crdetail" id="crdetail"></div><div class="crn">* Valor referencial. El precio final será confirmado por nuestro equipo comercial.</div></div>';
+  document.getElementById('cl-body').innerHTML = h;
+  var btn = document.getElementById('cl-ok'); btn.textContent = 'Calcular'; btn.dataset.step = 'c';
+  document.getElementById('clov').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function cCalc() { document.getElementById('clov').classList.remove('open'); document.body.style.overflow=''; calcIdx=-1; }
+
+function gQs(item) {
+
+  // ── TOLDOS ──────────────────────────────────────────────────────────
+  if (item.cat === 'toldos') {
+    var tp = item.tipo_prod || '';
+    var colLista = item.colores
+      ? item.colores.split(',').map(function(c){return c.trim();})
+      : ['Beige','Crudo','Negro','Azul','Rojo','Amarillo','Verde'];
+    var forLista = item.formas
+      ? item.formas.split(',').map(function(f){return f.trim();})
+      : ['Rectangular','Triangular','Cuadrado'];
+
+    // Producto 1: Solo confeccion de tela
+    if (tp === 'Confeccion') {
+      return [
+        {id:'m2',  l:'Metros cuadrados de tela', t:'number', u:'m²', p:'ej: 25'},
+        {id:'qty', l:'Cantidad de toldos de esa medida', t:'number', u:'und', p:'1'},
+        {id:'forma',l:'Forma del toldo', t:'sel', o:forLista},
+        {id:'color',l:'Color de la tela', t:'sel', o:colLista}
+      ];
+    }
+
+    // Producto 2: Kit completo (tela + anclaje + instalacion)
+    if (tp === 'Kit Instalacion') {
+      var pPosteStr = clp(item.poste || 250000);
+      return [
+        {id:'m2',     l:'Metros cuadrados de tela',                 t:'number',   u:'m²',       p:'ej: 25'},
+        {id:'qty',    l:'Cantidad de toldos de esa medida',         t:'number',   u:'und',       p:'1'},
+        {id:'esq',    l:'Cantidad de esquinas por toldo',           t:'number',   u:'esquinas',  p:'ej: 3 o 4'},
+        {id:'postes', l:'Cantidad de postes con fundacion (1m3 c/u)', t:'number', u:'postes',    p:'ej: 3 o 4',
+         hint:'Precio por poste con fundacion hormigon 1m3: ' + pPosteStr + '. Poste estandar: 5mm espesor, 6 pulgadas diametro.'},
+        {id:'color',  l:'Color de la tela',       t:'sel', o:colLista},
+        {id:'reg',    l:'Region de instalacion',  t:'sel',
+         o:['Region Metropolitana',
+            'Norte Grande (I-II Arica-Tarapaca)',
+            'Norte Chico (III-IV Atacama-Coquimbo)',
+            'Zona Centro (V-VI-VII)',
+            'Zona Sur (VIII-IX-X)',
+            'Zona Austral (XI-XII Aysen-Magallanes)']},
+        {id:'obs', l:'Observaciones adicionales del proyecto', t:'textarea',
+         p:'Ej: ubicacion, dimensiones especificas, materiales existentes, restricciones del lugar, etc.'}
+      ];
+    }
+
+    // fallback
+    return [{id:'m2',l:'Metros cuadrados',t:'number',u:'m²',p:'ej: 20'}];
+  }
+
+  // ── PASTO ────────────────────────────────────────────────────────────
+  if (item.cat === 'pasto') {
+    if (item.pi === 0) {
+      return [{id:'qty',l:'Cantidad',t:'number',p:'1',u:'und'}];
+    }
+    return [
+      {id:'m2',  l:'Metros cuadrados requeridos', t:'number', u:'m²', p:'ej: 40'},
+      {id:'inst',l:'Incluir instalacion?', t:'sel',
+       o:['Si, con preparacion de terreno e instalacion ($6.000/m²)',
+          'Solo suministro del pasto']}
+    ];
+  }
+
+  // ── CAUCHO ───────────────────────────────────────────────────────────
+  if (item.cat === 'caucho') {
+    return [
+      {id:'m2',   l:'Metros cuadrados requeridos', t:'number', u:'m²', p:'ej: 50'},
+      {id:'dis',  l:'Posee diseño o necesita asesoramiento?', t:'sel',
+       o:['Tengo diseño definido',
+          'Necesito asesoramiento de diseño']},
+      {id:'reg',  l:'Region de instalacion', t:'sel',
+       o:['Region Metropolitana',
+          'Norte Grande (I-II Arica-Tarapaca)',
+          'Norte Chico (III-IV Atacama-Coquimbo)',
+          'Zona Centro (V-VI-VII)',
+          'Zona Sur (VIII-IX-X)',
+          'Zona Austral (XI-XII Aysen-Magallanes)']},
+      {id:'base', l:'Superficie base de instalacion', t:'sel',
+       o:['Hormigon existente',
+          'Asfalto existente',
+          'Tierra / Preparar base nueva',
+          'Madera / Deck']}
+    ];
+  }
+
+  // ── JUEGOS / CANINO ──────────────────────────────────────────────────
+  return [{id:'qty',l:'Cantidad de unidades',t:'number',p:'1',u:'und'}];
+}
+
+function cPrc(item, v) {
+  var qty = parseInt(v.qty) || 1;
+
+  // ── TOLDOS ───────────────────────────────────────────────────────────
+  if (item.cat === 'toldos') {
+    var tp = item.tipo_prod || '';
+    var m2unit = parseFloat(v.m2) || 0;
+    var m2total = m2unit * qty;
+    var pTela = item.tela || 18990;
+
+    // Producto 1: Solo confeccion
+    if (tp === 'Confeccion') {
+      var total = Math.round(m2total * pTela);
+      return {
+        total: total,
+        detail: [
+          'Forma: ' + (v.forma || '-') + ' | Color: ' + (v.color || '-'),
+          'Tela HDPE 340grs: ' + m2unit.toFixed(2) + 'm² x ' + qty + ' toldo(s) = ' + m2total.toFixed(2) + 'm²',
+          'Precio tela: ' + m2total.toFixed(2) + 'm² x ' + clp(pTela) + '/m² = ' + clp(total)
+        ]
+      };
+    }
+
+    // Producto 2: Kit instalacion
+    if (tp === 'Kit Instalacion') {
+      var esq      = parseInt(v.esq)    || 0;
+      var nPostes  = parseInt(v.postes) || 0;
+      var pKit     = item.kit   || 60000;
+      var pPoste   = item.poste || 250000;
+      var costoTela   = m2total * pTela;
+      var costoKit    = esq * qty * pKit;
+      var costoPostes = nPostes * pPoste;
+      var total2 = Math.round(costoTela + costoKit + costoPostes);
+      var det = [
+        'Color: ' + (v.color || '-') + ' | Region: ' + (v.reg || '-'),
+        'Tela HDPE 340grs: ' + m2unit.toFixed(2) + 'm² x ' + qty + ' toldo(s) = ' + m2total.toFixed(2) + 'm² x ' + clp(pTela) + '/m² = ' + clp(costoTela),
+        'Kit anclaje: ' + esq + ' esq x ' + qty + ' toldo(s) = ' + (esq*qty) + ' kits x ' + clp(pKit) + '/esq = ' + clp(costoKit),
+        'Postes c/fundacion 1m3: ' + nPostes + ' postes x ' + clp(pPoste) + '/poste = ' + clp(costoPostes)
+      ];
+      if (v.obs && v.obs.trim()) {
+        det.push('Observaciones del cliente: ' + v.obs.trim());
+      }
+      if (item.nota) {
+        det.push('INFO TECNICA: ' + item.nota);
+      }
+      return {total: total2, detail: det};
+    }
+
+    // fallback
+    var t0 = Math.round((parseFloat(v.m2)||0) * (item.tela||18990));
+    return {total: t0, detail: [clp(t0)]};
+  }
+
+  // ── PASTO ─────────────────────────────────────────────────────────────
+  if (item.cat === 'pasto') {
+    if (item.pi === 0) {
+      var t1 = Math.round(qty * (item.pn||0) * 1.19);
+      if (item.pn === 0) t1 = 0;
+      return {total: t1, detail: ['Cantidad: ' + qty + ' und' + (t1 > 0 ? ' x ' + clp(Math.round((item.pn||0)*1.19)) + '/und = ' + clp(t1) : ' (precio a confirmar)')]};
+    }
+    var m2p = parseFloat(v.m2) || 0;
+    var pastoCosto = m2p * (item.pi || 3990);
+    var withInst   = v.inst && v.inst.indexOf('Si') >= 0;
+    var instCosto  = withInst ? m2p * 6000 : 0;
+    var det2 = [
+      'Pasto: ' + m2p.toFixed(2) + 'm² x ' + clp(item.pi) + '/m² = ' + clp(pastoCosto)
+    ];
+    if (instCosto) det2.push('Instalacion: ' + m2p.toFixed(2) + 'm² x $6.000/m² = ' + clp(instCosto));
+    return {total: Math.round(pastoCosto + instCosto), detail: det2};
+  }
+
+  // ── CAUCHO ────────────────────────────────────────────────────────────
+  if (item.cat === 'caucho') {
+    var m2c   = parseFloat(v.m2) || 0;
+    var costo = m2c * (item.pi || 64390);
+    var det3  = [
+      'Superficie: ' + m2c.toFixed(2) + 'm² x ' + clp(item.pi) + '/m² = ' + clp(costo)
+    ];
+    if (v.dis)  det3.push('Diseño: ' + v.dis);
+    if (v.reg)  det3.push('Region: ' + v.reg + ' — flete y viaticos a confirmar');
+    if (v.base) det3.push('Base: ' + v.base);
+    return {total: Math.round(costo), detail: det3};
+  }
+
+  // ── JUEGOS / CANINO ───────────────────────────────────────────────────
+  var t2 = Math.round(item.pi * qty);
+  return {total: t2, detail: ['Cantidad: ' + qty + ' und x ' + clp(item.pi) + '/und = ' + clp(t2)]};
+}
+
+function buildStxt(item, v) {
+  var qty = parseInt(v.qty)||1;
+  if (item.cat === 'toldos') {
+    var tp = item.tipo_prod || '';
+    var m2u = parseFloat(v.m2)||0;
+    if (tp === 'Confeccion')
+      return m2u.toFixed(2)+'m² x '+qty+' toldo(s) | '+( v.forma||'-')+' | '+(v.color||'-');
+    if (tp === 'Kit Instalacion')
+      return m2u.toFixed(2)+'m² x '+qty+' toldo(s) | '+(parseInt(v.esq)||0)+' esq | '+(parseInt(v.postes)||0)+' postes | '+(v.color||'-')+' | '+(v.reg||'-')+(v.obs&&v.obs.trim()?' | Obs: '+v.obs.trim().substring(0,40):'');
+    return m2u.toFixed(2)+'m² x '+qty+' und';
+  }
+  if (item.cat === 'pasto' && item.pi > 0) {
+    var m2p = parseFloat(v.m2)||0;
+    return m2p.toFixed(2)+'m²'+(v.inst&&v.inst.indexOf('Si')>=0?' | Con instalacion':'');
+  }
+  if (item.cat === 'caucho') {
+    var m2c = parseFloat(v.m2)||0;
+    return m2c.toFixed(2)+'m²'+(v.reg?' | '+v.reg:'')+(v.dis?' | '+v.dis:'');
+  }
+  return 'Cantidad: '+qty+' unidad(es)';
+}
+
+
+// ── SEND ──────────────────────────────────────────────────────────────
+</script>
+<script>
+
+function buildCotData() {
+  var nom = document.getElementById('cl-nom').value.trim();
+  var eml = document.getElementById('cl-eml').value.trim();
+  var tel = document.getElementById('cl-tel').value.trim();
+  var emp = document.getElementById('cl-emp').value.trim();
+  var not = document.getElementById('cl-not').value.trim();
+  var fecha = new Date().toLocaleDateString('es-CL',{day:'2-digit',month:'2-digit',year:'numeric'});
+  var hora  = new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'});
+  var numCot = 'COT-' + Date.now().toString().slice(-6);
+  var totalRef = 0;
+  var pendientes = 0;
+  var itemsRows = '';
+  var itemsWA = '';
+  cart.forEach(function(it, i) {
+    var valorTxt = it.nd ? 'Pendiente' : clp(it.vc||0);
+    if (!it.nd) totalRef += (it.vc||0); else pendientes++;
+    itemsRows += '<tr style="border-bottom:1px solid #e5e7eb">'
+      + '<td style="padding:8px 12px;font-size:13px;color:#374151">' + (i+1) + '. ' + it.co + '</td>'
+      + '<td style="padding:8px 12px;font-size:13px;color:#111827;font-weight:500">' + it.no + '</td>'
+      + '<td style="padding:8px 12px;font-size:12px;color:#6b7280">' + (it.stxt||'-') + '</td>'
+      + '<td style="padding:8px 12px;font-size:13px;font-weight:700;color:' + (it.nd?'#d97706':'#1a6b3c') + ';text-align:right">' + valorTxt + '</td>'
+      + '</tr>';
+    itemsWA += String.fromCharCode(10) + (i+1) + '. ' + it.co + ' - ' + it.no;
+    if (it.stxt) itemsWA += String.fromCharCode(10) + '   ' + it.stxt;
+    itemsWA += String.fromCharCode(10) + '   Valor: ' + valorTxt + String.fromCharCode(10);
+  });
+  var totalFmt = pendientes > 0
+    ? clp(totalRef) + ' + ' + pendientes + ' item(s) pendiente(s)'
+    : clp(totalRef);
+  return {
+    nom:nom, eml:eml, tel:tel, emp:emp, not:not,
+    fecha:fecha, hora:hora, numCot:numCot,
+    itemsRows:itemsRows, itemsWA:itemsWA,
+    totalRef:totalRef, totalFmt:totalFmt, pendientes:pendientes
+  };
+}
+
+
+function buildEmailHTML(d, forClient) {
+  var greeting = forClient
+    ? 'Estimado/a <strong>' + d.nom + '</strong>,'
+    : 'Nueva cotización recibida a través del catálogo web.';
+  var footer = forClient
+    ? 'Nuestro equipo revisará tu solicitud y te contactará a la brevedad para confirmar el valor oficial.<br>¿Consultas? Escríbenos al <a href="mailto:contacto@mamkam.cl" style="color:#1a6b3c">contacto@mamkam.cl</a> o al <a href="https://wa.me/56948182630" style="color:#1a6b3c">+569 4818 2630</a>.'
+    : 'Por favor revisa los ítems pendientes y contacta al cliente para confirmar el valor final.';
+
+  return '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,sans-serif">' +
+    '<table width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f6;padding:32px 0">' +
+    '<tr><td align="center">' +
+    '<table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.08)">' +
+    // Header
+    '<tr><td style="background:linear-gradient(135deg,#1a6b3c,#0f4a29);padding:32px 40px">' +
+    '<h1 style="margin:0;color:#ffffff;font-size:26px;font-weight:900;letter-spacing:1px">MAMKAM</h1>' +
+    '<p style="margin:4px 0 0;color:rgba(255,255,255,.75);font-size:13px">Cotización de Productos · ' + d.fecha + ' · ' + d.hora + '</p>' +
+    '</td></tr>' +
+    // Badge
+    '<tr><td style="padding:24px 40px 0">' +
+    '<div style="display:inline-block;background:#e6f4ec;border-radius:20px;padding:6px 16px;font-size:12px;font-weight:700;color:#1a6b3c;letter-spacing:1px">' + d.numCot + '</div>' +
+    '</td></tr>' +
+    // Greeting
+    '<tr><td style="padding:20px 40px 0"><p style="margin:0;font-size:15px;color:#374151;line-height:1.6">' + greeting + '</p></td></tr>' +
+    // Client data
+    '<tr><td style="padding:20px 40px 0">' +
+    '<table width="100%" cellpadding="0" cellspacing="0" style="background:#f9fafb;border-radius:8px;padding:16px">' +
+    '<tr><td style="font-size:11px;font-weight:700;color:#6b7280;letter-spacing:2px;text-transform:uppercase;padding-bottom:12px" colspan="2">DATOS DEL CLIENTE</td></tr>' +
+    '<tr><td style="font-size:13px;color:#6b7280;padding:3px 0;width:120px">Nombre</td><td style="font-size:13px;color:#111827;font-weight:600">' + d.nom + '</td></tr>' +
+    '<tr><td style="font-size:13px;color:#6b7280;padding:3px 0">Email</td><td style="font-size:13px;color:#111827">' + d.eml + '</td></tr>' +
+    (d.tel ? '<tr><td style="font-size:13px;color:#6b7280;padding:3px 0">Teléfono</td><td style="font-size:13px;color:#111827">' + d.tel + '</td></tr>' : '') +
+    (d.emp ? '<tr><td style="font-size:13px;color:#6b7280;padding:3px 0">Empresa</td><td style="font-size:13px;color:#111827">' + d.emp + '</td></tr>' : '') +
+    '</table></td></tr>' +
+    // Products table
+    '<tr><td style="padding:24px 40px 0">' +
+    '<p style="margin:0 0 12px;font-size:11px;font-weight:700;color:#6b7280;letter-spacing:2px;text-transform:uppercase">PRODUCTOS SOLICITADOS</p>' +
+    '<table width="100%" cellpadding="0" cellspacing="0" style="border-radius:8px;overflow:hidden;border:1px solid #e5e7eb">' +
+    '<thead><tr style="background:#f3f4f6">' +
+    '<th style="padding:10px 12px;text-align:left;font-size:11px;color:#6b7280;font-weight:700">#</th>' +
+    '<th style="padding:10px 12px;text-align:left;font-size:11px;color:#6b7280;font-weight:700">PRODUCTO</th>' +
+    '<th style="padding:10px 12px;text-align:left;font-size:11px;color:#6b7280;font-weight:700">ESPECIFICACIONES</th>' +
+    '<th style="padding:10px 12px;text-align:right;font-size:11px;color:#6b7280;font-weight:700">VALOR REF.</th>' +
+    '</tr></thead>' +
+    '<tbody>' + d.itemsRows + '</tbody>' +
+    '<tfoot><tr style="background:#f9fafb">' +
+    '<td colspan="3" style="padding:12px;font-size:14px;font-weight:700;color:#111827;text-align:right">TOTAL REFERENCIAL</td>' +
+    '<td style="padding:12px;font-size:16px;font-weight:900;color:#1a6b3c;text-align:right">' + d.totalFmt + '</td>' +
+    '</tr></tfoot>' +
+    '</table>' +
+    (d.pendientes > 0 ? '<p style="margin:8px 0 0;font-size:11px;color:#d97706">⚠️ ' + d.pendientes + ' ítem(s) están pendientes de cálculo. El valor final será confirmado por nuestro equipo.</p>' : '') +
+    '</td></tr>' +
+    // Notes
+    (d.not ? '<tr><td style="padding:16px 40px 0"><div style="background:#fff7ed;border-left:3px solid #f97316;border-radius:6px;padding:12px 16px"><p style="margin:0 0 4px;font-size:11px;font-weight:700;color:#ea580c;text-transform:uppercase;letter-spacing:1px">COMENTARIOS</p><p style="margin:0;font-size:13px;color:#374151">' + d.not + '</p></div></td></tr>' : '') +
+    // Footer
+    '<tr><td style="padding:32px 40px"><p style="margin:0;font-size:13px;color:#6b7280;line-height:1.7">' + footer + '</p></td></tr>' +
+    '<tr><td style="background:#f9fafb;padding:20px 40px;text-align:center;border-top:1px solid #e5e7eb">' +
+    '<p style="margin:0;font-size:12px;color:#9ca3af">MAMKAM · contacto@mamkam.cl · +569 4818 2630 · mamkam.cl</p>' +
+    '</td></tr>' +
+    '</table></td></tr></table>' +
+    '</body></html>';
+}
+
+
+</script>
+<script>
+
+function sendCot() {
+  var nom = document.getElementById('cl-nom').value.trim();
+  var eml = document.getElementById('cl-eml').value.trim();
+  if (!nom||!eml) { toast('Completa nombre y email'); return; }
+  if (!cart.length) { toast('Tu proyecto esta vacio'); return; }
+  var btn = document.getElementById('send-btn');
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+  var d = buildCotData();
+  var NL = String.fromCharCode(10);
+  var waMsg = '*COTIZACION MAMKAM - ' + d.numCot + '*' + NL
+    + 'Fecha: ' + d.fecha + ' - ' + d.hora + NL + NL
+    + '*Cliente:* ' + d.nom + NL
+    + '*Email:* ' + d.eml
+    + (d.tel ? NL + '*Tel:* ' + d.tel : '')
+    + (d.emp ? NL + '*Empresa:* ' + d.emp : '')
+    + NL + NL + '*Productos:*' + d.itemsWA
+    + NL + '*Total referencial:* ' + d.totalFmt
+    + (d.not ? NL + NL + '*Comentarios:* ' + d.not : '');
+  window.open('https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(waMsg), '_blank');
+  var htmlCliente  = buildEmailHTML(d, true);
+  var htmlVendedor = buildEmailHTML(d, false);
+  var params = {
+    to_email: d.eml, to_name: d.nom, reply_to: d.eml,
+    num_cotizacion: d.numCot, fecha: d.fecha,
+    cliente_nombre: d.nom, cliente_email: d.eml,
+    cliente_tel: d.tel||'No indicado', cliente_emp: d.emp||'No indicado',
+    total_ref: d.totalFmt, comentarios: d.not||'Sin comentarios',
+    html_body: htmlCliente, vendedor_email: 'contacto@mamkam.cl',
+    html_vendedor: htmlVendedor
+  };
+  emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params)
+    .then(function() {
+      var p2 = Object.assign({}, params, {
+        to_email: 'contacto@mamkam.cl',
+        to_name: 'Equipo MAMKAM',
+        html_body: htmlVendedor
+      });
+      return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_VENDEDOR, p2);
+    })
+    .then(function() { console.log('Emails enviados OK'); })
+    .catch(function(err) { console.warn('EmailJS error:', JSON.stringify(err)); });
+  setTimeout(function() {
+    btn.disabled = false;
+    btn.innerHTML = 'Enviar Cotizacion';
+    document.getElementById('suc-tx').innerHTML =
+      '<strong>' + d.nom + '</strong>, tu cotizacion fue enviada.' + '<br><br>'
+      + 'WhatsApp enviado al equipo comercial.<br>'
+      + 'Resumen enviado a <strong>' + d.eml + '</strong><br>'
+      + 'Copia enviada a <strong>contacto@mamkam.cl</strong><br><br>'
+      + '<small>N: ' + d.numCot + ' - ' + d.fecha + '</small>';
+    document.getElementById('sucov').classList.add('open');
+    cart = []; uBadge();
+  }, 2000);
+}
+
+
+function bindEvents() {
+  document.getElementById('d-cls').addEventListener('click', cModal);
+  document.getElementById('dovl').addEventListener('click', function(e){if(e.target===this)cModal();});
+  document.getElementById('d-wa').addEventListener('click', function(){
+    if(!mp)return;
+    var msg='Hola MAMKAM!\n\nEstoy interesado en:\n*'+mp.co+' - '+mp.no+'*'+(mp.pi?'\nPrecio: '+clp(mp.pi)+(mp.nd?'/m²':''):'')+'\n\nQuedo atento a su cotización.';
+    window.open('https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(msg),'_blank');
+  });
+  document.getElementById('d-add').addEventListener('click', function(){if(mp){addC(mp);cModal();}});
+
+  document.getElementById('cart-btn').addEventListener('click', shCart);
+  document.getElementById('back-btn').addEventListener('click', shCat);
+  document.getElementById('go-cat-btn').addEventListener('click', shCat);
+
+  document.getElementById('gvb').addEventListener('click',function(){document.getElementById('grid').classList.remove('lv');this.classList.add('on');document.getElementById('lvb').classList.remove('on');});
+  document.getElementById('lvb').addEventListener('click',function(){document.getElementById('grid').classList.add('lv');this.classList.add('on');document.getElementById('gvb').classList.remove('on');});
+
+  var si=document.getElementById('si'), msi=document.getElementById('msi');
+  si.addEventListener('input',function(){sq=this.value;rGrid();});
+  msi.addEventListener('input',function(){si.value=this.value;sq=this.value;rGrid();});
+
+  document.getElementById('hbg').addEventListener('click',function(){document.getElementById('ms').classList.toggle('open');});
+  document.getElementById('msc').addEventListener('click',function(){document.getElementById('ms').classList.remove('open');});
+
+  document.getElementById('cl-cancel').addEventListener('click', cCalc);
+  document.getElementById('clov').addEventListener('click',function(e){if(e.target===this)cCalc();});
+  document.getElementById('cl-ok').addEventListener('click', function(){
+    var btn=this;
+    if(btn.dataset.step==='a'){cCalc();rCart();toast('✓ Valor aplicado');return;}
+    var item=cart[calcIdx]; var qs=gQs(item); var vals={}; var ok=true;
+    qs.forEach(function(q){
+    if(q.t==='__info__'){return;}
+    var el=document.getElementById('qq-'+q.id);
+    if(el) vals[q.id]=el.value;
+    // textarea and fields with hint are optional — skip required check
+    var optional = (q.t==='textarea');
+    if(!optional && (!el || el.value==='' || el.value===null)) ok=false;
+  });
+    if(!ok){toast('Completa todos los campos');return;}
+    var res=cPrc(item,vals);
+    document.getElementById('cres').style.display='block';
+    document.getElementById('crv').textContent=clp(res.total);
+    document.getElementById('crdetail').innerHTML=res.detail.join('<br>');
+    item.vc=res.total; item.nd=false; item.stxt=buildStxt(item,vals);
+    btn.textContent='Confirmar y Aplicar'; btn.dataset.step='a';
+  });
+
+  document.getElementById('send-btn').addEventListener('click', sendCot);
+  document.getElementById('suc-btn').addEventListener('click',function(){document.getElementById('sucov').classList.remove('open');shCat();});
+
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){cModal();cCalc();}});
+
+  var sb=document.getElementById('stb');
+  sb.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+  window.addEventListener('scroll',function(){sb.classList.toggle('show',window.scrollY>400);},{passive:true});
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────
+function hideLoading() {
+  var el = document.getElementById('loading');
+  el.classList.add('hidden');
+  setTimeout(function(){el.style.display='none';},400);
+}
+function showError(msg) {
+  document.getElementById('loading').style.display='none';
+  var eb=document.getElementById('errbox');
+  document.getElementById('errtxt').innerHTML=msg;
+  eb.classList.add('show');
+}
+
+function showFilePickerFallback() {
+  // Try embedded data first (works both locally and on server without Excel)
+  var ta = document.getElementById('embedded-data');
+  if (ta && ta.value && ta.value.length > 100) {
+    try {
+      var data = JSON.parse(ta.value);
+      ALL = data;
+      buildSubsFromData();
+      document.getElementById('hero-cnt').textContent = ALL.length;
+      hideLoading();
+      initUI();
+      return;
+    } catch(e) {
+      console.warn('Embedded data parse error:', e);
+    }
+  }
+  // Show manual file picker as last resort
+  document.getElementById('loading').style.display='none';
+  document.getElementById('fp-box').style.display='block';
+}
+
+function handleFilePick(evt) {
+  var file = evt.target.files[0];
+  if (!file) return;
+  var lbl = document.getElementById('fp-lbl');
+  lbl.textContent = 'Leyendo ' + file.name + '...';
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var data = new Uint8Array(e.target.result);
+      var wb = XLSX.read(data, {type: 'array', cellDates: true});
+      parseWorkbook(wb);
+      document.getElementById('fp-box').style.display='none';
+      initUI();
+    } catch(err) {
+      document.getElementById('fp-lbl').textContent = 'Error: ' + err.message;
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+function toast(msg){var t=document.getElementById('tst');t.innerHTML=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3000);}
+
+// ── START ─────────────────────────────────────────────────────────────
+loadExcel();
+
+
+</script>
+</body>
+</html>
