@@ -227,6 +227,18 @@
   <changefreq>monthly</changefreq>
   <priority>0.8</priority>
 </url>
+<url>
+  <loc>https://www.mamkam.cl/blog/</loc>
+  <changefreq>weekly</changefreq>
+  <priority>0.8</priority>
+  <lastmod>2026-07-17</lastmod>
+</url>
+<url>
+  <loc>https://www.mamkam.cl/blog/norma-en1177-parques-infantiles-chile.html</loc>
+  <changefreq>monthly</changefreq>
+  <priority>0.8</priority>
+  <lastmod>2026-07-17</lastmod>
+</url>
 
 
 </urlset>
